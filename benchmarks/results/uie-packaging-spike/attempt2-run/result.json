@@ -1,0 +1,11 @@
+{
+  "command": [
+    "benchmarks\\results\\uie-packaging-spike\\attempt2\\dist\\uie-recognizer\\uie-recognizer.exe",
+    "F:\\code\\SafePrompt\\.benchmark-models\\uie-nano\\taskflow\\information_extraction\\uie-nano\\static",
+    "韩静在海川大学提交了报告。"
+  ],
+  "exit_code": 1,
+  "elapsed_ms": 42050.17609999777,
+  "stdout_bytes": 638,
+  "stderr_bytes": 2089
+}

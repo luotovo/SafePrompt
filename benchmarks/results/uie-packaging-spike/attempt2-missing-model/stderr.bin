@@ -1,0 +1,4 @@
+Traceback (most recent call last):
+  File "packaging_uie_smoke.py", line 68, in <module>
+FileNotFoundError: incomplete local UIE static model at F:\code\SafePrompt\benchmarks\results\uie-packaging-spike\attempt2\dist\uie-recognizer\missing-uie-static-model; missing=['config.json', 'vocab.txt', 'special_tokens_map.json', 'tokenizer_config.json'], model_parameter_pairs=[]
+[PYI-16328:ERROR] Failed to execute script 'packaging_uie_smoke' due to unhandled exception!

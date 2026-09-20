@@ -1,0 +1,202 @@
+177 INFO: PyInstaller: 6.22.3, contrib hooks: 2026.7
+178 INFO: Python: 3.12.0
+228 INFO: Platform: Windows-11-10.0.26200-SP0
+228 INFO: Python environment: F:\code\SafePrompt\.benchmark-venvs\uie-nano
+233 INFO: wrote benchmarks\results\uie-packaging-spike\attempt2\spec\uie-recognizer.spec
+236 INFO: Removing temporary files and cleaning cache in C:\Users\luotovo\AppData\Local\pyinstaller
+240 INFO: Module search paths (PYTHONPATH):
+['F:\\code\\SafePrompt\\.benchmark-venvs\\uie-nano\\Scripts\\pyinstaller.exe',
+ 'C:\\Users\\luotovo\\AppData\\Local\\Programs\\Python\\Python312\\python312.zip',
+ 'C:\\Users\\luotovo\\AppData\\Local\\Programs\\Python\\Python312\\DLLs',
+ 'C:\\Users\\luotovo\\AppData\\Local\\Programs\\Python\\Python312\\Lib',
+ 'C:\\Users\\luotovo\\AppData\\Local\\Programs\\Python\\Python312',
+ 'F:\\code\\SafePrompt\\.benchmark-venvs\\uie-nano',
+ 'F:\\code\\SafePrompt\\.benchmark-venvs\\uie-nano\\Lib\\site-packages',
+ 'F:\\code\\SafePrompt']
+798 INFO: checking Analysis
+798 INFO: Building Analysis because Analysis-00.toc is non existent
+798 INFO: Looking for Python shared library...
+798 INFO: Using Python shared library: C:\Users\luotovo\AppData\Local\Programs\Python\Python312\python312.dll
+798 INFO: Running Analysis Analysis-00.toc
+798 INFO: Target bytecode optimization level: 0
+798 INFO: Initializing module dependency graph...
+800 INFO: Initializing module graph hook caches...
+813 INFO: Analyzing modules for base_library.zip ...
+2453 INFO: Processing standard module hook 'hook-encodings.py' from 'F:\\code\\SafePrompt\\.benchmark-venvs\\uie-nano\\Lib\\site-packages\\PyInstaller\\hooks'
+3044 INFO: Processing standard module hook 'hook-math.py' from 'F:\\code\\SafePrompt\\.benchmark-venvs\\uie-nano\\Lib\\site-packages\\PyInstaller\\hooks'
+4114 INFO: Processing standard module hook 'hook-pickle.py' from 'F:\\code\\SafePrompt\\.benchmark-venvs\\uie-nano\\Lib\\site-packages\\PyInstaller\\hooks'
+5241 INFO: Processing standard module hook 'hook-heapq.py' from 'F:\\code\\SafePrompt\\.benchmark-venvs\\uie-nano\\Lib\\site-packages\\PyInstaller\\hooks'
+5643 INFO: Caching module dependency graph...
+5673 INFO: Analyzing F:\code\SafePrompt\benchmarks\packaging_uie_smoke.py
+5716 INFO: Processing standard module hook 'hook-paddlenlp.py' from 'F:\\code\\SafePrompt\\benchmarks\\pyinstaller_hooks'
+5796 INFO: Processing standard module hook 'hook-platform.py' from 'F:\\code\\SafePrompt\\.benchmark-venvs\\uie-nano\\Lib\\site-packages\\PyInstaller\\hooks'
+5944 INFO: Processing standard module hook 'hook-sysconfig.py' from 'F:\\code\\SafePrompt\\.benchmark-venvs\\uie-nano\\Lib\\site-packages\\PyInstaller\\hooks'
+6167 INFO: Processing standard module hook 'hook-webbrowser.py' from 'F:\\code\\SafePrompt\\.benchmark-venvs\\uie-nano\\Lib\\site-packages\\PyInstaller\\hooks'
+6233 INFO: Processing standard module hook 'hook-_ctypes.py' from 'F:\\code\\SafePrompt\\.benchmark-venvs\\uie-nano\\Lib\\site-packages\\PyInstaller\\hooks'
+6444 INFO: Processing standard module hook 'hook-multiprocessing.util.py' from 'F:\\code\\SafePrompt\\.benchmark-venvs\\uie-nano\\Lib\\site-packages\\PyInstaller\\hooks'
+6519 INFO: Processing standard module hook 'hook-xml.py' from 'F:\\code\\SafePrompt\\.benchmark-venvs\\uie-nano\\Lib\\site-packages\\PyInstaller\\hooks'
+6702 INFO: Processing standard module hook 'hook-numpy.py' from 'F:\\code\\SafePrompt\\.benchmark-venvs\\uie-nano\\Lib\\site-packages\\PyInstaller\\hooks'
+6972 INFO: Processing pre-safe-import-module hook 'hook-typing_extensions.py' from 'F:\\code\\SafePrompt\\.benchmark-venvs\\uie-nano\\Lib\\site-packages\\PyInstaller\\hooks\\pre_safe_import_module'
+6975 INFO: SetuptoolsInfo: initializing cached setuptools info...
+9728 INFO: Processing standard module hook 'hook-difflib.py' from 'F:\\code\\SafePrompt\\.benchmark-venvs\\uie-nano\\Lib\\site-packages\\PyInstaller\\hooks'
+10100 INFO: Processing standard module hook 'hook-psutil.py' from 'F:\\code\\SafePrompt\\.benchmark-venvs\\uie-nano\\Lib\\site-packages\\_pyinstaller_hooks_contrib\\stdhooks'
+10372 INFO: Processing standard module hook 'hook-charset_normalizer.py' from 'F:\\code\\SafePrompt\\.benchmark-venvs\\uie-nano\\Lib\\site-packages\\_pyinstaller_hooks_contrib\\stdhooks'
+11461 INFO: Processing standard module hook 'hook-astor.py' from 'F:\\code\\SafePrompt\\.benchmark-venvs\\uie-nano\\Lib\\site-packages\\_pyinstaller_hooks_contrib\\stdhooks'
+11661 INFO: Processing standard module hook 'hook-setuptools.py' from 'F:\\code\\SafePrompt\\.benchmark-venvs\\uie-nano\\Lib\\site-packages\\PyInstaller\\hooks'
+11682 INFO: Processing pre-safe-import-module hook 'hook-distutils.py' from 'F:\\code\\SafePrompt\\.benchmark-venvs\\uie-nano\\Lib\\site-packages\\PyInstaller\\hooks\\pre_safe_import_module'
+11714 INFO: Processing pre-safe-import-module hook 'hook-jaraco.py' from 'F:\\code\\SafePrompt\\.benchmark-venvs\\uie-nano\\Lib\\site-packages\\PyInstaller\\hooks\\pre_safe_import_module'
+11716 INFO: Setuptools: 'jaraco' appears to be a full setuptools-vendored copy - creating alias to 'setuptools._vendor.jaraco'!
+11722 INFO: Processing pre-safe-import-module hook 'hook-more_itertools.py' from 'F:\\code\\SafePrompt\\.benchmark-venvs\\uie-nano\\Lib\\site-packages\\PyInstaller\\hooks\\pre_safe_import_module'
+11723 INFO: Setuptools: 'more_itertools' appears to be a setuptools-vendored copy - creating alias to 'setuptools._vendor.more_itertools'!
+12109 INFO: Processing standard module hook 'hook-_osx_support.py' from 'F:\\code\\SafePrompt\\.benchmark-venvs\\uie-nano\\Lib\\site-packages\\PyInstaller\\hooks'
+12123 INFO: Processing pre-safe-import-module hook 'hook-packaging.py' from 'F:\\code\\SafePrompt\\.benchmark-venvs\\uie-nano\\Lib\\site-packages\\PyInstaller\\hooks\\pre_safe_import_module'
+12379 INFO: Processing standard module hook 'hook-setuptools._vendor.jaraco.text.py' from 'F:\\code\\SafePrompt\\.benchmark-venvs\\uie-nano\\Lib\\site-packages\\PyInstaller\\hooks'
+12381 INFO: Processing pre-safe-import-module hook 'hook-importlib_resources.py' from 'F:\\code\\SafePrompt\\.benchmark-venvs\\uie-nano\\Lib\\site-packages\\PyInstaller\\hooks\\pre_safe_import_module'
+12391 INFO: Processing pre-safe-import-module hook 'hook-backports.py' from 'F:\\code\\SafePrompt\\.benchmark-venvs\\uie-nano\\Lib\\site-packages\\PyInstaller\\hooks\\pre_safe_import_module'
+12392 INFO: Setuptools: 'backports' appears to be a full setuptools-vendored copy - creating alias to 'setuptools._vendor.backports'!
+13214 INFO: Processing pre-safe-import-module hook 'hook-tomli.py' from 'F:\\code\\SafePrompt\\.benchmark-venvs\\uie-nano\\Lib\\site-packages\\PyInstaller\\hooks\\pre_safe_import_module'
+13216 INFO: Setuptools: 'tomli' appears to be a setuptools-vendored copy - creating alias to 'setuptools._vendor.tomli'!
+13766 INFO: Processing pre-safe-import-module hook 'hook-wheel.py' from 'F:\\code\\SafePrompt\\.benchmark-venvs\\uie-nano\\Lib\\site-packages\\PyInstaller\\hooks\\pre_safe_import_module'
+13767 INFO: Setuptools: 'wheel' appears to be a setuptools-vendored copy - creating alias to 'setuptools._vendor.wheel'!
+14400 INFO: Processing standard module hook 'hook-certifi.py' from 'F:\\code\\SafePrompt\\.benchmark-venvs\\uie-nano\\Lib\\site-packages\\_pyinstaller_hooks_contrib\\stdhooks'
+14546 INFO: Processing standard module hook 'hook-anyio.py' from 'F:\\code\\SafePrompt\\.benchmark-venvs\\uie-nano\\Lib\\site-packages\\_pyinstaller_hooks_contrib\\stdhooks'
+16119 INFO: Processing standard module hook 'hook-pygments.py' from 'F:\\code\\SafePrompt\\.benchmark-venvs\\uie-nano\\Lib\\site-packages\\PyInstaller\\hooks'
+17563 INFO: Processing standard module hook 'hook-rich.py' from 'F:\\code\\SafePrompt\\.benchmark-venvs\\uie-nano\\Lib\\site-packages\\_pyinstaller_hooks_contrib\\stdhooks'
+19428 INFO: Processing standard module hook 'hook-pandas.py' from 'F:\\code\\SafePrompt\\.benchmark-venvs\\uie-nano\\Lib\\site-packages\\PyInstaller\\hooks'
+20868 INFO: Processing standard module hook 'hook-zoneinfo.py' from 'F:\\code\\SafePrompt\\.benchmark-venvs\\uie-nano\\Lib\\site-packages\\_pyinstaller_hooks_contrib\\stdhooks'
+21171 INFO: Processing standard module hook 'hook-scipy.py' from 'F:\\code\\SafePrompt\\.benchmark-venvs\\uie-nano\\Lib\\site-packages\\PyInstaller\\hooks'
+22718 INFO: Processing standard module hook 'hook-scipy.linalg.py' from 'F:\\code\\SafePrompt\\.benchmark-venvs\\uie-nano\\Lib\\site-packages\\PyInstaller\\hooks'
+22840 INFO: Processing standard module hook 'hook-scipy.special._ufuncs.py' from 'F:\\code\\SafePrompt\\.benchmark-venvs\\uie-nano\\Lib\\site-packages\\PyInstaller\\hooks'
+24407 INFO: Processing standard module hook 'hook-scipy.spatial._ckdtree.py' from 'F:\\code\\SafePrompt\\.benchmark-venvs\\uie-nano\\Lib\\site-packages\\PyInstaller\\hooks'
+24492 INFO: Processing standard module hook 'hook-matplotlib.py' from 'F:\\code\\SafePrompt\\.benchmark-venvs\\uie-nano\\Lib\\site-packages\\PyInstaller\\hooks'
+25286 INFO: Processing standard module hook 'hook-matplotlib.backend_bases.py' from 'F:\\code\\SafePrompt\\.benchmark-venvs\\uie-nano\\Lib\\site-packages\\PyInstaller\\hooks'
+25493 INFO: Processing standard module hook 'hook-PIL.py' from 'F:\\code\\SafePrompt\\.benchmark-venvs\\uie-nano\\Lib\\site-packages\\PyInstaller\\hooks'
+25578 INFO: Processing standard module hook 'hook-PIL.Image.py' from 'F:\\code\\SafePrompt\\.benchmark-venvs\\uie-nano\\Lib\\site-packages\\PyInstaller\\hooks'
+26058 INFO: Processing standard module hook 'hook-xml.etree.cElementTree.py' from 'F:\\code\\SafePrompt\\.benchmark-venvs\\uie-nano\\Lib\\site-packages\\PyInstaller\\hooks'
+26365 INFO: Processing standard module hook 'hook-PIL.ImageFilter.py' from 'F:\\code\\SafePrompt\\.benchmark-venvs\\uie-nano\\Lib\\site-packages\\PyInstaller\\hooks'
+27372 INFO: Processing standard module hook 'hook-jinja2.py' from 'F:\\code\\SafePrompt\\.benchmark-venvs\\uie-nano\\Lib\\site-packages\\_pyinstaller_hooks_contrib\\stdhooks'
+28155 INFO: Processing standard module hook 'hook-matplotlib.backends.py' from 'F:\\code\\SafePrompt\\.benchmark-venvs\\uie-nano\\Lib\\site-packages\\PyInstaller\\hooks'
+28265 INFO: Processing standard module hook 'hook-matplotlib.pyplot.py' from 'F:\\code\\SafePrompt\\.benchmark-venvs\\uie-nano\\Lib\\site-packages\\PyInstaller\\hooks'
+28476 INFO: Processing standard module hook 'hook-matplotlib.figure.py' from 'F:\\code\\SafePrompt\\.benchmark-venvs\\uie-nano\\Lib\\site-packages\\PyInstaller\\hooks'
+29227 INFO: Processing standard module hook 'hook-dateutil.py' from 'F:\\code\\SafePrompt\\.benchmark-venvs\\uie-nano\\Lib\\site-packages\\_pyinstaller_hooks_contrib\\stdhooks'
+29330 INFO: Processing pre-safe-import-module hook 'hook-six.moves.py' from 'F:\\code\\SafePrompt\\.benchmark-venvs\\uie-nano\\Lib\\site-packages\\PyInstaller\\hooks\\pre_safe_import_module'
+30760 INFO: Processing pre-safe-import-module hook 'hook-gi.py' from 'F:\\code\\SafePrompt\\.benchmark-venvs\\uie-nano\\Lib\\site-packages\\PyInstaller\\hooks\\pre_safe_import_module'
+31574 INFO: Processing standard module hook 'hook-scipy.spatial.transform.rotation.py' from 'F:\\code\\SafePrompt\\.benchmark-venvs\\uie-nano\\Lib\\site-packages\\PyInstaller\\hooks'
+32614 INFO: Processing standard module hook 'hook-scipy.stats._stats.py' from 'F:\\code\\SafePrompt\\.benchmark-venvs\\uie-nano\\Lib\\site-packages\\PyInstaller\\hooks'
+33181 INFO: Processing standard module hook 'hook-scipy.sparse.csgraph.py' from 'F:\\code\\SafePrompt\\.benchmark-venvs\\uie-nano\\Lib\\site-packages\\PyInstaller\\hooks'
+34019 INFO: Processing standard module hook 'hook-scipy.special._ellip_harm_2.py' from 'F:\\code\\SafePrompt\\.benchmark-venvs\\uie-nano\\Lib\\site-packages\\PyInstaller\\hooks'
+35639 INFO: Processing standard module hook 'hook-pandas.io.formats.style.py' from 'F:\\code\\SafePrompt\\.benchmark-venvs\\uie-nano\\Lib\\site-packages\\PyInstaller\\hooks'
+37337 INFO: Processing standard module hook 'hook-pyarrow.py' from 'F:\\code\\SafePrompt\\.benchmark-venvs\\uie-nano\\Lib\\site-packages\\_pyinstaller_hooks_contrib\\stdhooks'
+38244 INFO: Processing standard module hook 'hook-urllib3.py' from 'F:\\code\\SafePrompt\\.benchmark-venvs\\uie-nano\\Lib\\site-packages\\_pyinstaller_hooks_contrib\\stdhooks'
+38627 INFO: Processing standard module hook 'hook-fsspec.py' from 'F:\\code\\SafePrompt\\.benchmark-venvs\\uie-nano\\Lib\\site-packages\\_pyinstaller_hooks_contrib\\stdhooks'
+40211 INFO: Processing standard module hook 'hook-pandas.plotting.py' from 'F:\\code\\SafePrompt\\.benchmark-venvs\\uie-nano\\Lib\\site-packages\\PyInstaller\\hooks'
+41629 INFO: Processing standard module hook 'hook-sqlite3.py' from 'F:\\code\\SafePrompt\\.benchmark-venvs\\uie-nano\\Lib\\site-packages\\PyInstaller\\hooks'
+42086 INFO: Processing standard module hook 'hook-pandas.io.clipboard.py' from 'F:\\code\\SafePrompt\\.benchmark-venvs\\uie-nano\\Lib\\site-packages\\PyInstaller\\hooks'
+42290 INFO: Processing standard module hook 'hook-xml.dom.domreg.py' from 'F:\\code\\SafePrompt\\.benchmark-venvs\\uie-nano\\Lib\\site-packages\\PyInstaller\\hooks'
+43262 INFO: Processing pre-safe-import-module hook 'hook-tensorflow.py' from 'F:\\code\\SafePrompt\\.benchmark-venvs\\uie-nano\\Lib\\site-packages\\_pyinstaller_hooks_contrib\\pre_safe_import_module'
+54431 INFO: Processing standard module hook 'hook-pydantic.py' from 'F:\\code\\SafePrompt\\.benchmark-venvs\\uie-nano\\Lib\\site-packages\\_pyinstaller_hooks_contrib\\stdhooks'
+F:\code\SafePrompt\.benchmark-venvs\uie-nano\Lib\site-packages\paddlenlp\transformers\model_utils.py:2148: SyntaxWarning: invalid escape sequence '\d'
+  reg = re.compile("(.*?)-\d{5}-of-\d{5}")
+F:\code\SafePrompt\.benchmark-venvs\uie-nano\Lib\site-packages\jieba\__init__.py:44: SyntaxWarning: invalid escape sequence '\.'
+  re_han_default = re.compile("([\u4E00-\u9FD5a-zA-Z0-9+#&\._%\-]+)", re.U)
+F:\code\SafePrompt\.benchmark-venvs\uie-nano\Lib\site-packages\jieba\__init__.py:46: SyntaxWarning: invalid escape sequence '\s'
+  re_skip_default = re.compile("(\r\n|\s)", re.U)
+59830 INFO: Processing standard module hook 'hook-jieba.py' from 'F:\\code\\SafePrompt\\.benchmark-venvs\\uie-nano\\Lib\\site-packages\\_pyinstaller_hooks_contrib\\stdhooks'
+F:\code\SafePrompt\.benchmark-venvs\uie-nano\Lib\site-packages\jieba\finalseg\__init__.py:78: SyntaxWarning: invalid escape sequence '\.'
+  re_skip = re.compile("([a-zA-Z0-9]+(?:\.\d+)?%?)")
+F:\code\SafePrompt\.benchmark-venvs\uie-nano\Lib\site-packages\paddlenlp\transformers\chatglm\modeling.py:947: SyntaxWarning: invalid escape sequence '\?'
+  ["\?", "£¿"],
+F:\code\SafePrompt\.benchmark-venvs\uie-nano\Lib\site-packages\paddlenlp\transformers\visualglm\processing.py:202: SyntaxWarning: invalid escape sequence '\?'
+  ["\?", "£¿"],
+F:\code\SafePrompt\.benchmark-venvs\uie-nano\Lib\site-packages\polygraphy\tools\inspect\subtool\model\viewer\_templates.py:447: SyntaxWarning: invalid escape sequence '\|'
+  """
+66830 INFO: Processing standard module hook 'hook-datasets.py' from 'F:\\code\\SafePrompt\\.benchmark-venvs\\uie-nano\\Lib\\site-packages\\_pyinstaller_hooks_contrib\\stdhooks'
+67318 INFO: Processing pre-find-module-path hook 'hook-tkinter.py' from 'F:\\code\\SafePrompt\\.benchmark-venvs\\uie-nano\\Lib\\site-packages\\PyInstaller\\hooks\\pre_find_module_path'
+67320 INFO: TclTkInfo: initializing cached Tcl/Tk info...
+68694 INFO: Processing standard module hook 'hook-_tkinter.py' from 'F:\\code\\SafePrompt\\.benchmark-venvs\\uie-nano\\Lib\\site-packages\\PyInstaller\\hooks'
+69101 INFO: Processing standard module hook 'hook-shelve.py' from 'F:\\code\\SafePrompt\\.benchmark-venvs\\uie-nano\\Lib\\site-packages\\PyInstaller\\hooks'
+69659 INFO: Processing standard module hook 'hook-Crypto.py' from 'F:\\code\\SafePrompt\\.benchmark-venvs\\uie-nano\\Lib\\site-packages\\_pyinstaller_hooks_contrib\\stdhooks'
+72049 INFO: Processing standard module hook 'hook-scipy.io.matlab.py' from 'F:\\code\\SafePrompt\\.benchmark-venvs\\uie-nano\\Lib\\site-packages\\PyInstaller\\hooks'
+72584 INFO: Processing standard module hook 'hook-cloudpickle.py' from 'F:\\code\\SafePrompt\\.benchmark-venvs\\uie-nano\\Lib\\site-packages\\_pyinstaller_hooks_contrib\\stdhooks'
+74649 INFO: Processing standard module hook 'hook-sklearn.py' from 'F:\\code\\SafePrompt\\.benchmark-venvs\\uie-nano\\Lib\\site-packages\\_pyinstaller_hooks_contrib\\stdhooks'
+75308 INFO: Processing standard module hook 'hook-sklearn.utils.py' from 'F:\\code\\SafePrompt\\.benchmark-venvs\\uie-nano\\Lib\\site-packages\\_pyinstaller_hooks_contrib\\stdhooks'
+75393 INFO: Processing standard module hook 'hook-narwhals.py' from 'F:\\code\\SafePrompt\\.benchmark-venvs\\uie-nano\\Lib\\site-packages\\_pyinstaller_hooks_contrib\\stdhooks'
+77368 INFO: Processing standard module hook 'hook-sklearn.externals.array_api_compat.numpy.py' from 'F:\\code\\SafePrompt\\.benchmark-venvs\\uie-nano\\Lib\\site-packages\\_pyinstaller_hooks_contrib\\stdhooks'
+77433 INFO: Processing standard module hook 'hook-sklearn.externals.array_api_compat.cupy.py' from 'F:\\code\\SafePrompt\\.benchmark-venvs\\uie-nano\\Lib\\site-packages\\_pyinstaller_hooks_contrib\\stdhooks'
+77463 INFO: Processing standard module hook 'hook-sklearn.externals.array_api_compat.torch.py' from 'F:\\code\\SafePrompt\\.benchmark-venvs\\uie-nano\\Lib\\site-packages\\_pyinstaller_hooks_contrib\\stdhooks'
+77506 INFO: Processing standard module hook 'hook-sklearn.externals.array_api_compat.dask.array.py' from 'F:\\code\\SafePrompt\\.benchmark-venvs\\uie-nano\\Lib\\site-packages\\_pyinstaller_hooks_contrib\\stdhooks'
+77924 INFO: Processing standard module hook 'hook-sklearn.metrics.py' from 'F:\\code\\SafePrompt\\.benchmark-venvs\\uie-nano\\Lib\\site-packages\\_pyinstaller_hooks_contrib\\stdhooks'
+81387 INFO: Processing standard module hook 'hook-sklearn.metrics.cluster.py' from 'F:\\code\\SafePrompt\\.benchmark-venvs\\uie-nano\\Lib\\site-packages\\_pyinstaller_hooks_contrib\\stdhooks'
+81473 INFO: Processing standard module hook 'hook-sklearn.metrics.pairwise.py' from 'F:\\code\\SafePrompt\\.benchmark-venvs\\uie-nano\\Lib\\site-packages\\_pyinstaller_hooks_contrib\\stdhooks'
+81654 INFO: Processing standard module hook 'hook-sklearn.cluster.py' from 'F:\\code\\SafePrompt\\.benchmark-venvs\\uie-nano\\Lib\\site-packages\\_pyinstaller_hooks_contrib\\stdhooks'
+81882 INFO: Processing standard module hook 'hook-sklearn.neighbors.py' from 'F:\\code\\SafePrompt\\.benchmark-venvs\\uie-nano\\Lib\\site-packages\\_pyinstaller_hooks_contrib\\stdhooks'
+82044 INFO: Processing standard module hook 'hook-sklearn.linear_model.py' from 'F:\\code\\SafePrompt\\.benchmark-venvs\\uie-nano\\Lib\\site-packages\\_pyinstaller_hooks_contrib\\stdhooks'
+F:\code\SafePrompt\.benchmark-venvs\uie-nano\Lib\site-packages\baidubce\utils.py:903: SyntaxWarning: invalid escape sequence '\d'
+  compile_ip=re.compile(b'((2(5[0-5]|[0-4]\d))|[0-1]?\d{1,2})(.((2(5[0-5]|[0-4]\d))|[0-1]?\d{1,2})){3}')
+F:\code\SafePrompt\.benchmark-venvs\uie-nano\Lib\site-packages\future\backports\email\feedparser.py:37: SyntaxWarning: invalid escape sequence '\Z'
+  NLCRE_eol = re.compile('(\r\n|\r|\n)\Z')
+F:\code\SafePrompt\.benchmark-venvs\uie-nano\Lib\site-packages\future\backports\email\utils.py:68: SyntaxWarning: invalid escape sequence '\A'
+  '([^\ud800-\udbff]|\A)[\udc00-\udfff]([^\udc00-\udfff]|\Z)').search
+F:\code\SafePrompt\.benchmark-venvs\uie-nano\Lib\site-packages\future\backports\urllib\parse.py:957: SyntaxWarning: invalid escape sequence '\?'
+  _queryprog = re.compile('^(.*)\?([^?]*)$')
+F:\code\SafePrompt\.benchmark-venvs\uie-nano\Lib\site-packages\future\backports\http\client.py:1: SyntaxWarning: invalid escape sequence '\_'
+  """HTTP/1.1 client library
+F:\code\SafePrompt\.benchmark-venvs\uie-nano\Lib\site-packages\future\backports\http\cookiejar.py:212: SyntaxWarning: invalid escape sequence '\d'
+  "(\d\d\d\d) (\d\d):(\d\d):(\d\d) GMT$", re.ASCII)
+F:\code\SafePrompt\.benchmark-venvs\uie-nano\Lib\site-packages\future\backports\http\cookiejar.py:293: SyntaxWarning: invalid escape sequence '\d'
+  """^
+F:\code\SafePrompt\.benchmark-venvs\uie-nano\Lib\site-packages\future\backports\http\cookiejar.py:429: SyntaxWarning: invalid escape sequence '\s'
+  non_junk, nr_junk_chars = re.subn("^[=\s;]*", "", text)
+85845 INFO: Processing module hooks (post-graph stage)...
+86794 INFO: Processing standard module hook 'hook-sklearn.tree.py' from 'F:\\code\\SafePrompt\\.benchmark-venvs\\uie-nano\\Lib\\site-packages\\_pyinstaller_hooks_contrib\\stdhooks'
+86863 INFO: Processing standard module hook 'hook-matplotlib.backends.py' from 'F:\\code\\SafePrompt\\.benchmark-venvs\\uie-nano\\Lib\\site-packages\\PyInstaller\\hooks'
+86864 INFO: Matplotlib backend selection method: automatic discovery of used backends
+86896 INFO: Discovered Matplotlib backend(s) via `matplotlib.use()` call in module 'paddle.dataset.uci_housing': ['Agg']
+86896 INFO: The following Matplotlib backends were discovered by scanning for `matplotlib.use()` calls: ['Agg']. If your backend of choice is not in this list, either add a `matplotlib.use()` call to your code, or configure the backend collection via hook options (see: https://pyinstaller.org/en/stable/hooks-config.html#matplotlib-hooks).
+87472 INFO: Selected matplotlib backends: ['Agg']
+87473 INFO: Extra dists for selected matplotlib backends: []
+88109 INFO: Processing standard module hook 'hook-PIL.SpiderImagePlugin.py' from 'F:\\code\\SafePrompt\\.benchmark-venvs\\uie-nano\\Lib\\site-packages\\PyInstaller\\hooks'
+90348 WARNING: Hidden import "scipy.special._cdflib" not found!
+90398 INFO: Processing standard module hook 'hook-_tkinter.py' from 'F:\\code\\SafePrompt\\.benchmark-venvs\\uie-nano\\Lib\\site-packages\\PyInstaller\\hooks'
+90400 INFO: Processing standard module hook 'hook-tzdata.py' from 'F:\\code\\SafePrompt\\.benchmark-venvs\\uie-nano\\Lib\\site-packages\\_pyinstaller_hooks_contrib\\stdhooks'
+91140 INFO: Performing binary vs. data reclassification (2787 entries)
+91599 INFO: Looking for ctypes DLLs
+91867 INFO: Analyzing run-time hooks ...
+91893 INFO: Including run-time hook 'pyi_rth_inspect.py' from 'F:\\code\\SafePrompt\\.benchmark-venvs\\uie-nano\\Lib\\site-packages\\PyInstaller\\hooks\\rthooks'
+91895 INFO: Including run-time hook 'pyi_rth_pkgutil.py' from 'F:\\code\\SafePrompt\\.benchmark-venvs\\uie-nano\\Lib\\site-packages\\PyInstaller\\hooks\\rthooks'
+91897 INFO: Including run-time hook 'pyi_rth_setuptools.py' from 'F:\\code\\SafePrompt\\.benchmark-venvs\\uie-nano\\Lib\\site-packages\\PyInstaller\\hooks\\rthooks'
+91898 INFO: Including run-time hook 'pyi_rth_mplconfig.py' from 'F:\\code\\SafePrompt\\.benchmark-venvs\\uie-nano\\Lib\\site-packages\\PyInstaller\\hooks\\rthooks'
+91899 INFO: Processing pre-find-module-path hook 'hook-_pyi_rth_utils.py' from 'F:\\code\\SafePrompt\\.benchmark-venvs\\uie-nano\\Lib\\site-packages\\PyInstaller\\hooks\\pre_find_module_path'
+91901 INFO: Processing standard module hook 'hook-_pyi_rth_utils.py' from 'F:\\code\\SafePrompt\\.benchmark-venvs\\uie-nano\\Lib\\site-packages\\PyInstaller\\hooks'
+91909 INFO: Including run-time hook 'pyi_rth_multiprocessing.py' from 'F:\\code\\SafePrompt\\.benchmark-venvs\\uie-nano\\Lib\\site-packages\\PyInstaller\\hooks\\rthooks'
+91911 INFO: Including run-time hook 'pyi_rth__tkinter.py' from 'F:\\code\\SafePrompt\\.benchmark-venvs\\uie-nano\\Lib\\site-packages\\PyInstaller\\hooks\\rthooks'
+92059 INFO: Creating base_library.zip...
+92157 INFO: Looking for dynamic libraries
+100842 INFO: Extra DLL search directories (AddDllDirectory): ['F:\\code\\SafePrompt\\.benchmark-venvs\\uie-nano\\Lib\\site-packages\\paddle\\base\\..\\libs', 'F:\\code\\SafePrompt\\.benchmark-venvs\\uie-nano\\Lib\\site-packages\\numpy.libs', 'F:\\code\\SafePrompt\\.benchmark-venvs\\uie-nano\\Lib\\site-packages\\scipy.libs', 'F:\\code\\SafePrompt\\.benchmark-venvs\\uie-nano\\Lib\\site-packages\\pandas.libs', 'F:\\code\\SafePrompt\\.benchmark-venvs\\uie-nano\\Lib\\site-packages\\pyarrow.libs']
+100842 INFO: Extra DLL search directories (PATH): ['F:\\code\\SafePrompt\\.benchmark-venvs\\uie-nano\\Lib\\site-packages\\paddle\\base', 'F:\\code\\SafePrompt\\.benchmark-venvs\\uie-nano\\Lib\\site-packages\\paddle\\base\\..\\libs']
+105711 INFO: Warnings written to F:\code\SafePrompt\benchmarks\results\uie-packaging-spike\attempt2\build\uie-recognizer\warn-uie-recognizer.txt
+106620 INFO: Graph cross-reference written to F:\code\SafePrompt\benchmarks\results\uie-packaging-spike\attempt2\build\uie-recognizer\xref-uie-recognizer.html
+107092 INFO: checking PYZ
+107092 INFO: Building PYZ because PYZ-00.toc is non existent
+107092 INFO: Building PYZ (ZlibArchive) F:\code\SafePrompt\benchmarks\results\uie-packaging-spike\attempt2\build\uie-recognizer\PYZ-00.pyz
+113356 INFO: Building PYZ (ZlibArchive) F:\code\SafePrompt\benchmarks\results\uie-packaging-spike\attempt2\build\uie-recognizer\PYZ-00.pyz completed successfully.
+113577 INFO: checking PKG
+113577 INFO: Building PKG because PKG-00.toc is non existent
+113577 INFO: Building PKG (CArchive) uie-recognizer.pkg
+115158 INFO: Building PKG (CArchive) uie-recognizer.pkg completed successfully.
+115162 INFO: Bootloader F:\code\SafePrompt\.benchmark-venvs\uie-nano\Lib\site-packages\PyInstaller\bootloader\Windows-64bit-intel\run.exe
+115163 INFO: checking EXE
+115163 INFO: Building EXE because EXE-00.toc is non existent
+115163 INFO: Building EXE from EXE-00.toc
+115163 INFO: Copying bootloader EXE to F:\code\SafePrompt\benchmarks\results\uie-packaging-spike\attempt2\build\uie-recognizer\uie-recognizer.exe
+115305 INFO: Copying icon to EXE
+115445 INFO: Copying 0 resources to EXE
+115445 INFO: Embedding manifest in EXE
+115589 INFO: Appending PKG archive to EXE
+117689 INFO: Fixing EXE headers
+121453 INFO: Building EXE from EXE-00.toc completed successfully.
+121510 INFO: checking COLLECT
+121510 INFO: Building COLLECT because COLLECT-00.toc is non existent
+121511 INFO: Building COLLECT COLLECT-00.toc
+152001 INFO: Building COLLECT COLLECT-00.toc completed successfully.
+152149 INFO: Build complete! The results are available in: F:\code\SafePrompt\benchmarks\results\uie-packaging-spike\attempt2\dist

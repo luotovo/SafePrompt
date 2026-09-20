@@ -1,0 +1,26 @@
+F:\code\SafePrompt\benchmarks\results\uie-packaging-spike\attempt2\dist\uie-recognizer\_internal\paddlenlp\transformers\model_utils.py:2148: SyntaxWarning: invalid escape sequence '\d'
+  reg = re.compile("(.*?)-\d{5}-of-\d{5}")
+F:\code\SafePrompt\benchmarks\results\uie-packaging-spike\attempt2\dist\uie-recognizer\_internal\paddlenlp\transformers\chatglm\modeling.py:947: SyntaxWarning: invalid escape sequence '\?'
+  ["\?", "？"],
+F:\code\SafePrompt\benchmarks\results\uie-packaging-spike\attempt2\dist\uie-recognizer\_internal\paddlenlp\transformers\visualglm\processing.py:202: SyntaxWarning: invalid escape sequence '\?'
+  ["\?", "？"],
+Traceback (most recent call last):
+  File "packaging_uie_smoke.py", line 78, in <module>
+  File "safeprompt\adapters\paddle.py", line 112, in load_uie_local
+    return UieNanoRecognizer.from_local_path(model_path)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "safeprompt\adapters\paddle.py", line 47, in from_local_path
+    predictor = Taskflow("information_extraction", schema=["人名", "组织机构"],
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "paddlenlp\taskflow\taskflow.py", line 804, in __init__
+  File "paddlenlp\taskflow\information_extraction.py", line 536, in __init__
+  File "paddlenlp\taskflow\task.py", line 372, in _get_inference_model
+  File "paddlenlp\taskflow\task.py", line 227, in _prepare_static_mode
+RuntimeError: (PreconditionNotMet) The third-party dynamic library (mklml.dll) that Paddle depends on is not configured correctly. (error code is 126)
+  Suggestions:
+  1. Check if the third-party dynamic library (e.g. CUDA, CUDNN) is installed correctly and its version is matched with paddlepaddle you installed.
+  2. Configure third-party dynamic library environment variables as follows:
+  - Linux: set LD_LIBRARY_PATH by `export LD_LIBRARY_PATH=...`
+  - Windows: set PATH by `set PATH=XXX; (at ..\paddle\phi\backends\dynload\dynamic_loader.cc:312)
+
+[PYI-23240:ERROR] Failed to execute script 'packaging_uie_smoke' due to unhandled exception!

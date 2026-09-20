@@ -1,0 +1,11 @@
+{
+  "command": [
+    "F:\\code\\SafePrompt\\benchmarks\\results\\uie-packaging-spike\\attempt2\\dist\\uie-recognizer\\uie-recognizer.exe",
+    "missing-uie-static-model",
+    "韩静在海川大学提交了报告。"
+  ],
+  "exit_code": 1,
+  "elapsed_ms": 304.6723999977985,
+  "stdout_bytes": 367,
+  "stderr_bytes": 470
+}

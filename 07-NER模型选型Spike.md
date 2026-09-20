@@ -88,7 +88,7 @@ V1 的线程超时保证调用方在约 2 秒后返回规则与词库结果，�
 - Taskflow static：manifest SHA-256 `149c2239223face281545bc742d774e1b6bfa5cbcf0327d6d438b16b877975a2`。
 - 三份 manifest 收尾复核 mismatch 均为 0。Paddle 准备目录保留动态与静态双份，完整准备根分别约 143,386,915 B 与 67,387,844 B；主表只列实际 loader 使用的 static runtime path。
 - 数据集 56 条：PERSON gold 35、ORG gold 33、负样本 20、长文本 1。`ner_dataset.py` SHA-256 为 `3d1b0f0fc04ce22823c24eac2c33be8d8cc060af51b684734ecf9ef29c30a09c`，`ner_samples.jsonl` 为 `ebee70d695b910b5e2af9bf4af7f675208feb12a5907bba1a76eb11b2744c6a`。
-- 项目没有 Git 元数据，因此没有本轮前的 VCS 基线可独立证明 gold 历史未变；本轮开始记录与结束复核的 hash 一致。
+- benchmark 开始时项目还没有 Git 元数据，因此没有更早的 VCS 基线可独立证明 gold 历史未变；本轮开始记录与结束复核的 hash 一致，项目随后已初始化 Git。
 
 ### 离线与缺失模型
 
@@ -104,7 +104,7 @@ V1 的线程超时保证调用方在约 2 秒后返回规则与词库结果，�
 
 ### PyInstaller 最小打包
 
-PyInstaller `6.22.3`，统一 `--clean --onedir --noconfirm --paths .`；各独立环境最小 baseline 均为 19,401,285 B 且启动 exit 0。模型外置，`dist + runtime model` 不是完整 SafePrompt 发布体积。三候选均构建成功，但没有一个冻结后的 recognizer 成功运行到推理阶段。
+PyInstaller `6.22.3`，统一 `--clean --onedir --noconfirm --paths .`；各独立环境最小 baseline 均为 19,401,285 B 且启动 exit 0。模型外置，`dist + runtime model` 不是完整 SafePrompt 发布体积。首次三模型横向打包阶段均构建成功，但当时没有一个冻结后的 recognizer 成功运行到推理阶段。
 
 | 候选 | candidate dist | 相对 baseline 增量 | dist + runtime model | 独立启动结果 |
 | --- | ---: | ---: | ---: | --- |
@@ -113,7 +113,56 @@ PyInstaller `6.22.3`，统一 `--clean --onedir --noconfirm --paths .`；各独�
 | UIE Nano（一次 datafix） | 545,190,343 B | 525,789,058 B | 616,728,560 B | 加入 `paddlenlp/transformers` 后首个错误消失；随后在 `scipy.stats._distn_infrastructure` 报 `NameError: obj is not defined`，exit 1 |
 | Taskflow NER（默认） | 531,085,012 B | 511,683,727 B | 563,789,802 B | exit 1；同样缺 `paddlenlp/transformers` data tree；未重复 UIE 已证明仍会进入的深层 datafix 链 |
 
-打包进程未观察到网络尝试，也未先遇到 missing DLL；但因为三者都未到推理阶段，不能据此证明后续 DLL/runtime 完整。干净 VM 或另一台机器启动未测。原始 spec/build/dist/warn/xref 保存在 `benchmarks/results/pyinstaller/`。
+首次打包进程未观察到网络尝试，也未先遇到 missing DLL；但因为三者当时都未到推理阶段，不能据此证明后续 DLL/runtime 完整。干净 VM 或另一台机器启动未测。原始 spec/build/dist/warn/xref 保存在 `benchmarks/results/pyinstaller/`。
+
+### UIE Nano Windows Packaging Spike
+
+三模型横向 benchmark 结束后，仅对 UIE Nano 做了独立 packaging/runtime 定位。固定环境仍为 Python `3.12.0`、Paddle `2.6.2`、PaddleNLP `2.6.1`、PyInstaller `6.22.3`；没有修改模型、gold set、正式 SafePrompt app/core/NER loader。
+
+最终最小入口为 `benchmarks/packaging_uie_smoke.py`，构建命令为：
+
+```powershell
+.benchmark-venvs\uie-nano\Scripts\pyinstaller.exe --clean --onedir --noconfirm --paths . --additional-hooks-dir benchmarks\pyinstaller_hooks --distpath benchmarks\results\uie-packaging-spike\attempt2\dist --workpath benchmarks\results\uie-packaging-spike\attempt2\build --specpath benchmarks\results\uie-packaging-spike\attempt2\spec --name uie-recognizer benchmarks\packaging_uie_smoke.py
+```
+
+生成的 spec 位于 `benchmarks/results/uie-packaging-spike/attempt2/spec/uie-recognizer.spec`。自定义 hook 为 `benchmarks/pyinstaller_hooks/hook-paddlenlp.py`：
+
+- `paddlenlp.transformers` 使用纯 `py` source collection，满足 PaddleNLP 2.6.1 AutoConfig 对真实源码目录的扫描。
+- `scipy.stats._distn_infrastructure` 使用纯 `py` source collection，避免 frozen PYZ 下的 `NameError: obj is not defined`。
+- 显式收集 `paddle/libs/mklml.dll` 到原包布局；没有额外 hidden imports、data files、runtime hook 或 PATH 修改。
+
+定位过程：
+
+1. 既有 datafix 已解决 `paddlenlp/transformers` 目录缺失，但 frozen PYZ 中的 SciPy 模块在 `del obj` 时报 `NameError`。同一模块在普通 Python 中导入成功，证明问题仅发生在 frozen/PYZ 路径。
+2. `pyz+py` 同时存在时仍优先加载 PYZ，因此 attempt1 继续失败。
+3. attempt2 改成纯 source mode 后进入 Paddle static predictor，随后暴露唯一明确 native 缺项：`mklml.dll` error 126。
+4. 将 pinned venv 中的 `mklml.dll` 按 `_internal/paddle/libs` 原布局补入 attempt2 dist 后，新进程真实推理成功。
+
+成功验证：
+
+- 输入：`韩静在海川大学提交了报告。`
+- 输出：`PERSON 韩静 [0,2]`、`ORG 海川大学 [3,7]`。
+- executable exit code：`0`。
+- executable-relative 外置模型路径启动：成功；不依赖当前 cwd。
+- 启动并完成一次推理：约 `4.82s`。
+- 进程级 socket fail-closed 下 `network_attempts=[]`。
+- 构造 Taskflow 前设置 `paddlenlp.taskflow.utils.DOWNLOAD_CHECK=True`，避免本地模型路径仍触发匿名统计请求。
+- 缺失模型路径：约 `304.67ms` 后 exit `1`，在导入 PaddleNLP 前由 preflight 报出缺失配置和模型参数对。
+- 缺失模型路径与隔离的 `PADDLE_HOME` / `PPNLP_HOME` / `HF_HOME` 前后均不存在，没有创建缓存目录。
+- UIE static manifest mismatch 为 `0`，模型未修改。
+
+| 项目 | 实测大小 |
+| --- | ---: |
+| 同环境最小 baseline | 19,401,285 B |
+| 成功的 patched onedir dist | 628,113,553 B |
+| 相对 baseline 增量 | 608,712,268 B |
+| 外置 UIE static model | 71,538,217 B |
+| dist + 外置模型 | 699,651,770 B |
+| `mklml.dll` | 92,649,344 B |
+
+`mklml.dll` SHA-256 为 `e2a7fd93e1534568626cffe22676b15164a5a2b3a62f1919a55993478b45811e`。成功 executable SHA-256 为 `72153c24aaa0f667be70d1550273d022d75a0db981eb78d1974442189ce31488`。
+
+边界：`mklml.dll` 规则是在 attempt2 clean build 暴露缺项后写入最终 hook；遵守两次 build 上限，没有再做第三次 clean rebuild。成功产物是同一 attempt2 dist 经 `benchmarks/apply_uie_dist_dll_fix.py` 可审计补入同一 DLL 后的结果；最终 hook 从零 clean rebuild 的可重复性仍未测。物理断网、系统级连接审计和干净 VM 仍未测。完整 stdout/stderr、traceback、warnings、spec、TOC、xref 与运行证据索引见 `benchmarks/results/uie-packaging-spike/README.md`。
 
 ### timeout 后资源行为
 

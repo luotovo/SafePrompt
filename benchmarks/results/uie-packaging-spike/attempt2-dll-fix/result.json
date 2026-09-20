@@ -1,0 +1,14 @@
+{
+  "command": [
+    ".benchmark-venvs\\uie-nano\\Scripts\\python.exe",
+    "benchmarks\\apply_uie_dist_dll_fix.py",
+    "--source",
+    ".benchmark-venvs\\uie-nano\\Lib\\site-packages\\paddle\\libs\\mklml.dll",
+    "--dist-dir",
+    "benchmarks\\results\\uie-packaging-spike\\attempt2\\dist\\uie-recognizer"
+  ],
+  "exit_code": 0,
+  "elapsed_ms": 6260.2321000013035,
+  "stdout_bytes": 355,
+  "stderr_bytes": 0
+}

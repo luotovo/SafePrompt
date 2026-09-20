@@ -1,0 +1,129 @@
+Traceback (most recent call last):
+  File "packaging_offline_smoke.py", line 51, in <module>
+  File "safeprompt\adapters\paddle.py", line 112, in load_uie_local
+    return UieNanoRecognizer.from_local_path(model_path)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "safeprompt\adapters\paddle.py", line 43, in from_local_path
+    from paddlenlp import Taskflow
+  File "<frozen importlib._bootstrap>", line 1354, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 1325, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 929, in _load_unlocked
+  File "pyimod02_importers.py", line 457, in exec_module
+  File "paddlenlp\__init__.py", line 35, in <module>
+  File "<frozen importlib._bootstrap>", line 1354, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 1325, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 929, in _load_unlocked
+  File "pyimod02_importers.py", line 457, in exec_module
+  File "paddlenlp\dataaug\__init__.py", line 17, in <module>
+  File "<frozen importlib._bootstrap>", line 1354, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 1325, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 929, in _load_unlocked
+  File "pyimod02_importers.py", line 457, in exec_module
+  File "paddlenlp\dataaug\sentence.py", line 17, in <module>
+  File "<frozen importlib._bootstrap>", line 1354, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 1325, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 929, in _load_unlocked
+  File "pyimod02_importers.py", line 457, in exec_module
+  File "paddlenlp\taskflow\__init__.py", line 15, in <module>
+  File "<frozen importlib._bootstrap>", line 1354, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 1325, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 929, in _load_unlocked
+  File "pyimod02_importers.py", line 457, in exec_module
+  File "paddlenlp\taskflow\taskflow.py", line 26, in <module>
+  File "<frozen importlib._bootstrap>", line 1354, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 1325, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 929, in _load_unlocked
+  File "pyimod02_importers.py", line 457, in exec_module
+  File "paddlenlp\taskflow\information_extraction.py", line 31, in <module>
+  File "<frozen importlib._bootstrap>", line 1354, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 1325, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 929, in _load_unlocked
+  File "pyimod02_importers.py", line 457, in exec_module
+  File "paddlenlp\utils\ie_utils.py", line 22, in <module>
+  File "<frozen importlib._bootstrap>", line 1354, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 1325, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 929, in _load_unlocked
+  File "pyimod02_importers.py", line 457, in exec_module
+  File "paddlenlp\metrics\__init__.py", line 16, in <module>
+  File "<frozen importlib._bootstrap>", line 1354, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 1325, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 929, in _load_unlocked
+  File "pyimod02_importers.py", line 457, in exec_module
+  File "paddlenlp\metrics\chunk.py", line 20, in <module>
+  File "<frozen importlib._bootstrap>", line 1354, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 1325, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 929, in _load_unlocked
+  File "pyimod02_importers.py", line 457, in exec_module
+  File "seqeval\metrics\__init__.py", line 1, in <module>
+  File "<frozen importlib._bootstrap>", line 1354, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 1325, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 929, in _load_unlocked
+  File "pyimod02_importers.py", line 457, in exec_module
+  File "seqeval\metrics\sequence_labeling.py", line 14, in <module>
+  File "<frozen importlib._bootstrap>", line 1354, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 1325, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 929, in _load_unlocked
+  File "pyimod02_importers.py", line 457, in exec_module
+  File "seqeval\metrics\v1.py", line 5, in <module>
+  File "<frozen importlib._bootstrap>", line 1354, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 1325, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 929, in _load_unlocked
+  File "pyimod02_importers.py", line 457, in exec_module
+  File "sklearn\__init__.py", line 70, in <module>
+  File "<frozen importlib._bootstrap>", line 1354, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 1325, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 929, in _load_unlocked
+  File "pyimod02_importers.py", line 457, in exec_module
+  File "sklearn\base.py", line 20, in <module>
+  File "<frozen importlib._bootstrap>", line 1354, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 1325, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 929, in _load_unlocked
+  File "pyimod02_importers.py", line 457, in exec_module
+  File "sklearn\utils\__init__.py", line 9, in <module>
+  File "<frozen importlib._bootstrap>", line 1354, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 1325, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 929, in _load_unlocked
+  File "pyimod02_importers.py", line 457, in exec_module
+  File "sklearn\utils\_chunking.py", line 11, in <module>
+  File "<frozen importlib._bootstrap>", line 1354, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 1325, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 929, in _load_unlocked
+  File "pyimod02_importers.py", line 457, in exec_module
+  File "sklearn\utils\_param_validation.py", line 17, in <module>
+  File "<frozen importlib._bootstrap>", line 1354, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 1325, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 929, in _load_unlocked
+  File "pyimod02_importers.py", line 457, in exec_module
+  File "sklearn\utils\validation.py", line 24, in <module>
+  File "<frozen importlib._bootstrap>", line 1354, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 1325, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 929, in _load_unlocked
+  File "pyimod02_importers.py", line 457, in exec_module
+  File "sklearn\utils\_array_api.py", line 23, in <module>
+  File "<frozen importlib._bootstrap>", line 1354, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 1325, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 929, in _load_unlocked
+  File "pyimod02_importers.py", line 457, in exec_module
+  File "sklearn\utils\fixes.py", line 16, in <module>
+  File "<frozen importlib._bootstrap>", line 1354, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 1325, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 929, in _load_unlocked
+  File "pyimod02_importers.py", line 457, in exec_module
+  File "scipy\stats\__init__.py", line 600, in <module>
+  File "<frozen importlib._bootstrap>", line 1354, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 1325, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 929, in _load_unlocked
+  File "pyimod02_importers.py", line 457, in exec_module
+  File "scipy\stats\_stats_py.py", line 50, in <module>
+  File "<frozen importlib._bootstrap>", line 1354, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 1325, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 929, in _load_unlocked
+  File "pyimod02_importers.py", line 457, in exec_module
+  File "scipy\stats\distributions.py", line 8, in <module>
+  File "<frozen importlib._bootstrap>", line 1354, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 1325, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 929, in _load_unlocked
+  File "pyimod02_importers.py", line 457, in exec_module
+  File "scipy\stats\_distn_infrastructure.py", line 370, in <module>
+NameError: name 'obj' is not defined
+[PYI-7412:ERROR] Failed to execute script 'packaging_offline_smoke' due to unhandled exception!

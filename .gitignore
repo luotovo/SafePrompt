@@ -5,6 +5,8 @@ __pycache__/
 .benchmark-venvs/
 .benchmark-models/
 benchmarks/results/pyinstaller/
+benchmarks/results/uie-packaging-spike/attempt*/build/
+benchmarks/results/uie-packaging-spike/attempt*/dist/
 
 build/
 dist/

@@ -1,0 +1,25 @@
+{
+  "command": [
+    ".benchmark-venvs\\uie-nano\\Scripts\\pyinstaller.exe",
+    "--clean",
+    "--onedir",
+    "--noconfirm",
+    "--paths",
+    ".",
+    "--additional-hooks-dir",
+    "benchmarks\\pyinstaller_hooks",
+    "--distpath",
+    "benchmarks\\results\\uie-packaging-spike\\attempt2\\dist",
+    "--workpath",
+    "benchmarks\\results\\uie-packaging-spike\\attempt2\\build",
+    "--specpath",
+    "benchmarks\\results\\uie-packaging-spike\\attempt2\\spec",
+    "--name",
+    "uie-recognizer",
+    "benchmarks\\packaging_uie_smoke.py"
+  ],
+  "exit_code": 0,
+  "elapsed_ms": 152930.65659999775,
+  "stdout_bytes": 0,
+  "stderr_bytes": 26267
+}

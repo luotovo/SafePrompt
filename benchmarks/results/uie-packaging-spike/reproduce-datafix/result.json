@@ -1,0 +1,11 @@
+{
+  "command": [
+    "benchmarks\\results\\pyinstaller\\uie-datafix\\dist\\uie-recognizer\\uie-recognizer.exe",
+    "uie",
+    ".benchmark-models\\uie-nano\\taskflow\\information_extraction\\uie-nano\\static"
+  ],
+  "exit_code": 1,
+  "elapsed_ms": 34342.075900000054,
+  "stdout_bytes": 111,
+  "stderr_bytes": 8589
+}

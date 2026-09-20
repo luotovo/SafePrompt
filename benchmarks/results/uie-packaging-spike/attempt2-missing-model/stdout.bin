@@ -1,0 +1,1 @@
+{"status": "failed", "error_type": "FileNotFoundError", "error": "incomplete local UIE static model at F:\\code\\SafePrompt\\benchmarks\\results\\uie-packaging-spike\\attempt2\\dist\\uie-recognizer\\missing-uie-static-model; missing=['config.json', 'vocab.txt', 'special_tokens_map.json', 'tokenizer_config.json'], model_parameter_pairs=[]", "network_attempts": []}

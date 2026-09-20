@@ -1,0 +1,11 @@
+{
+  "command": [
+    ".benchmark-venvs\\uie-nano\\Scripts\\python.exe",
+    "-c",
+    "import scipy.stats._distn_infrastructure as m; print(m.__file__)"
+  ],
+  "exit_code": 0,
+  "elapsed_ms": 12198.645699998451,
+  "stdout_bytes": 101,
+  "stderr_bytes": 0
+}
