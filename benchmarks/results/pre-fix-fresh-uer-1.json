@@ -1,0 +1,36 @@
+{
+  "metrics": {
+    "PERSON": {
+      "precision": 0.90625,
+      "recall": 0.8285714285714286,
+      "f1": 0.8656716417910447
+    },
+    "ORG": {
+      "precision": 0.6829268292682927,
+      "recall": 0.8484848484848485,
+      "f1": 0.7567567567567567
+    }
+  },
+  "false_positives": 16,
+  "median_latency_ms": 65.7278500002576,
+  "p95_latency_ms": 160.72900000017398,
+  "max_latency_ms": 1205.2229999999327,
+  "long_text_latency_ms": 1144.1420999999536,
+  "long_text_p95_latency_ms": 1205.2229999999327,
+  "long_text_max_latency_ms": 1205.2229999999327,
+  "cold_load_ms": 47848.79240000009,
+  "model_directory_bytes": 407010299,
+  "rss_delta_bytes": 611516416,
+  "pyinstaller_added_bytes": null,
+  "windows_runtime_issues": [],
+  "offline_startup": null,
+  "hidden_downloads": null,
+  "environment": {
+    "python": "3.12.0",
+    "platform": "Windows-11-10.0.26200-SP0",
+    "packages": {
+      "torch": "2.6.0",
+      "transformers": "4.48.3"
+    }
+  }
+}

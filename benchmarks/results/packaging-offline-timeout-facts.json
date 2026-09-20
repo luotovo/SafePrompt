@@ -1,0 +1,101 @@
+{
+  "scope": "Windows PyInstaller/offline/timeout benchmark closure only",
+  "host": "Windows 11 10.0.26200, Python 3.12.0",
+  "offline_method": "fresh process with socket.socket.connect and socket.create_connection fail-closed; physical NIC disconnect not performed",
+  "offline": {
+    "uer": {
+      "local_inference_success": true,
+      "startup_and_inference_ms": 23874.673799999982,
+      "network_attempts": [],
+      "missing_path_exit_code": 1,
+      "missing_path_error": "OSError: Incorrect path_or_model_id",
+      "missing_path_created": false
+    },
+    "uie_nano": {
+      "local_inference_success": true,
+      "startup_and_inference_ms": 11302.405000000363,
+      "network_attempts": [],
+      "missing_path_exit_code": 1,
+      "missing_path_error": "FileNotFoundError: WinError 3",
+      "missing_path_created": false
+    },
+    "taskflow_ner": {
+      "local_inference_success": true,
+      "startup_and_inference_ms": 10361.574800000199,
+      "network_attempts": [],
+      "missing_path_exit_code": 1,
+      "missing_path_error": "FileNotFoundError: WinError 3",
+      "missing_path_created": false
+    }
+  },
+  "pyinstaller": {
+    "version": "6.22.3",
+    "mode": "onedir",
+    "common_options": ["--clean", "--onedir", "--noconfirm", "--paths", "."],
+    "baseline_dist_bytes": 19401285,
+    "models_external": true,
+    "uer": {
+      "build_success": true,
+      "dist_bytes": 468233236,
+      "increment_over_baseline_bytes": 448831951,
+      "runtime_model_bytes": 407010299,
+      "dist_plus_runtime_model_bytes": 875243535,
+      "baseline_start_exit_code": 0,
+      "packaged_inference_exit_code": 1,
+      "packaged_inference_success": false,
+      "network_attempts": [],
+      "hooks_seen": ["hook-torch.py", "hook-transformers.py"],
+      "failure": "Transformers pipeline import reached torch._numpy._ufuncs.py:235 and failed with NameError: name 'name' is not defined"
+    },
+    "uie_nano": {
+      "build_success": true,
+      "default_dist_bytes": 531085012,
+      "default_increment_over_baseline_bytes": 511683727,
+      "runtime_static_model_bytes": 71538217,
+      "default_dist_plus_runtime_model_bytes": 602623229,
+      "baseline_start_exit_code": 0,
+      "default_packaged_inference_exit_code": 1,
+      "default_failure": "PaddleNLP AutoConfig requires an on-disk paddlenlp/transformers tree; default frozen distribution has none",
+      "datafix": "--add-data <venv>/Lib/site-packages/paddlenlp/transformers;paddlenlp/transformers",
+      "datafix_dist_bytes": 545190343,
+      "datafix_increment_over_baseline_bytes": 525789058,
+      "datafix_dist_plus_runtime_model_bytes": 616728560,
+      "datafix_packaged_inference_exit_code": 1,
+      "datafix_failure": "eager import chain reached scipy.stats._distn_infrastructure and failed with NameError: name 'obj' is not defined",
+      "packaged_inference_success": false,
+      "network_attempts": []
+    },
+    "taskflow_ner": {
+      "build_success": true,
+      "dist_bytes": 531085012,
+      "increment_over_baseline_bytes": 511683727,
+      "runtime_static_model_bytes": 32704790,
+      "dist_plus_runtime_model_bytes": 563789802,
+      "baseline_start_exit_code": 0,
+      "packaged_inference_exit_code": 1,
+      "packaged_inference_success": false,
+      "network_attempts": [],
+      "failure": "PaddleNLP AutoConfig requires an on-disk paddlenlp/transformers tree; default frozen distribution has none",
+      "known_required_data": "paddlenlp/transformers tree; not rebuilt because the same UIE datafix exposed a second deep SciPy frozen-runtime failure"
+    },
+    "clean_machine_or_vm_startup": "not tested",
+    "missing_dll_observed": false,
+    "note": "No packaged candidate reached inference, so absence of a missing-DLL error is not proof that all later DLL requirements are satisfied."
+  },
+  "timeout": {
+    "method": "controlled CPU-bound recognizer for 2.5 seconds; NerService timeout_seconds=2.0",
+    "caller_return_ms": 2034.4249999998283,
+    "service_unavailable": true,
+    "thread_finished_at_return": false,
+    "background_finished": true,
+    "background_finished_after_return_ms": 466.38350000011997,
+    "cpu_seconds_before_return": 2.046875,
+    "cpu_seconds_after_return": 0.46875,
+    "live_non_main_threads_after_wait": []
+  },
+  "model_integrity": {
+    "uer_manifest_mismatches": 0,
+    "uie_static_manifest_mismatches": 0,
+    "taskflow_static_manifest_mismatches": 0
+  }
+}

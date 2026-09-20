@@ -1,0 +1,6 @@
+{"text":"负责人韩静在中国地质大学项目现场处理故障。","entities":[{"category":"PERSON","start":3,"end":5,"text":"韩静"},{"category":"ORG","start":6,"end":12,"text":"中国地质大学"}]}
+{"text":"孙雅静联系武汉市审计局确认接口开放时间。","entities":[{"category":"PERSON","start":0,"end":3,"text":"孙雅静"},{"category":"ORG","start":5,"end":11,"text":"武汉市审计局"}]}
+{"text":"日志由李明提交，服务器地址为10.21.3.15。","entities":[{"category":"PERSON","start":3,"end":5,"text":"李明"}]}
+{"text":"北京华云科技有限公司与陈浩确认了交付计划。","entities":[{"category":"ORG","start":0,"end":10,"text":"北京华云科技有限公司"},{"category":"PERSON","start":11,"end":13,"text":"陈浩"}]}
+{"text":"南京大学信息化建设与管理处反馈登录异常。","entities":[{"category":"ORG","start":0,"end":13,"text":"南京大学信息化建设与管理处"}]}
+{"text":"password=zhangsan123，这里不应把账号片段识别人名。","entities":[]}

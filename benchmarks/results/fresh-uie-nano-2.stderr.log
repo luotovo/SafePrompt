@@ -1,0 +1,5 @@
+[2026-09-20 20:33:38,970] [    INFO] - We are using <class 'paddlenlp.transformers.ernie.tokenizer.ErnieTokenizer'> to load 'F:\code\SafePrompt\.benchmark-models\uie-nano\taskflow\information_extraction\uie-nano\static'.
+F:\code\SafePrompt\.benchmark-venvs\uie-nano\Lib\site-packages\paddlenlp\transformers\tokenizer_utils_base.py:2478: FutureWarning: The `max_seq_len` argument is deprecated and will be removed in a future version, please use `max_length` instead.
+  warnings.warn(
+F:\code\SafePrompt\.benchmark-venvs\uie-nano\Lib\site-packages\paddlenlp\transformers\tokenizer_utils_base.py:1878: FutureWarning: The `pad_to_max_length` argument is deprecated and will be removed in a future version, use `padding=True` or `padding='longest'` to pad to the longest sequence in the batch, or use `padding='max_length'` to pad to a max length. In this case, you can give a specific length with `max_length` (e.g. `max_length=45`) or leave max_length to None to pad to the maximal input size of the model (e.g. 512 for Bert).
+  warnings.warn(

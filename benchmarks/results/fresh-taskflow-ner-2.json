@@ -1,0 +1,36 @@
+{
+  "metrics": {
+    "PERSON": {
+      "precision": 1.0,
+      "recall": 0.8,
+      "f1": 0.888888888888889
+    },
+    "ORG": {
+      "precision": 0.8648648648648649,
+      "recall": 0.9696969696969697,
+      "f1": 0.9142857142857143
+    }
+  },
+  "false_positives": 5,
+  "median_latency_ms": 12.4495999998544,
+  "p95_latency_ms": 21.426399999654677,
+  "max_latency_ms": 32.06049999971583,
+  "long_text_latency_ms": 358.68389999996,
+  "long_text_p95_latency_ms": 375.1886000000013,
+  "long_text_max_latency_ms": 375.1886000000013,
+  "cold_load_ms": 5353.899300000194,
+  "model_directory_bytes": 32704790,
+  "rss_delta_bytes": 389541888,
+  "pyinstaller_added_bytes": null,
+  "windows_runtime_issues": [],
+  "offline_startup": null,
+  "hidden_downloads": null,
+  "environment": {
+    "python": "3.12.0",
+    "platform": "Windows-11-10.0.26200-SP0",
+    "packages": {
+      "paddlepaddle": "2.6.2",
+      "paddlenlp": "2.6.1"
+    }
+  }
+}

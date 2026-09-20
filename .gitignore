@@ -1,0 +1,11 @@
+__pycache__/
+*.py[cod]
+.pytest_cache/
+
+.benchmark-venvs/
+.benchmark-models/
+benchmarks/results/pyinstaller/
+
+build/
+dist/
+*.spec

@@ -1,0 +1,23 @@
+Traceback (most recent call last):
+  File "F:\code\SafePrompt\benchmarks\run_ner_benchmark.py", line 122, in <module>
+    main()
+  File "F:\code\SafePrompt\benchmarks\run_ner_benchmark.py", line 101, in main
+    recognizer = load_factory(args.factory)(args.model_dir)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "F:\code\SafePrompt\safeprompt\adapters\paddle.py", line 112, in load_uie_local
+    return UieNanoRecognizer.from_local_path(model_path)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "F:\code\SafePrompt\safeprompt\adapters\paddle.py", line 47, in from_local_path
+    predictor = Taskflow("information_extraction", schema=["����", "��֯����"],
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "F:\code\SafePrompt\.benchmark-venvs\uie-nano\Lib\site-packages\paddlenlp\taskflow\taskflow.py", line 804, in __init__
+    self.task_instance = task_class(
+                         ^^^^^^^^^^^
+  File "F:\code\SafePrompt\.benchmark-venvs\uie-nano\Lib\site-packages\paddlenlp\taskflow\information_extraction.py", line 468, in __init__
+    super().__init__(task=task, model=model, **kwargs)
+  File "F:\code\SafePrompt\.benchmark-venvs\uie-nano\Lib\site-packages\paddlenlp\taskflow\task.py", line 75, in __init__
+    self._static_model_name = self._get_static_model_name()
+                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "F:\code\SafePrompt\.benchmark-venvs\uie-nano\Lib\site-packages\paddlenlp\taskflow\task.py", line 124, in _get_static_model_name
+    raise IOError(f"{self._task_path} should include '.pdmodel' file.")
+OSError: F:\code\SafePrompt\.benchmark-models\uie-nano should include '.pdmodel' file.
