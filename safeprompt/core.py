@@ -10,12 +10,12 @@ RISK_LEVEL = {
     "TOKEN": "high", "ID_CARD": "high", "PHONE": "high", "EMAIL": "high",
     "URL": "medium", "IP": "medium", "DOMAIN": "medium", "PERSON": "medium",
     "CUSTOMER": "medium", "PROJECT": "medium", "DEPARTMENT": "low", "SYSTEM": "low",
-    "ORG": "medium",
+    "ORG": "medium", "ID": "medium",
 }
 PRIORITY = {
     "DB_CREDENTIAL": 1, "PASSWORD": 2, "SECRET": 2, "API_KEY": 2, "TOKEN": 2,
     "ID_CARD": 3, "PHONE": 3, "EMAIL": 3, "URL": 4, "IP": 5, "DOMAIN": 5,
-    "PERSON": 6, "ORG": 6, "CUSTOMER": 6, "PROJECT": 6, "DEPARTMENT": 6, "SYSTEM": 6,
+    "PERSON": 6, "ORG": 6, "CUSTOMER": 6, "PROJECT": 6, "DEPARTMENT": 6, "SYSTEM": 6, "ID": 6,
 }
 SOURCE_PRIORITY = {"rule": 1, "dictionary": 2, "entity_model": 3}
 DEFAULT_SELECTED = {category: True for category in RISK_LEVEL}
@@ -49,6 +49,9 @@ RULES: tuple[tuple[str, re.Pattern[str]], ...] = (
     ("API_KEY", re.compile(r"\b(?:sk|pk|ak|rk)_[A-Za-z0-9_-]{12,}\b", re.I)),
     ("PASSWORD", re.compile(r"\"?(?:password|passwd|pwd)\"?\s*[:=]\s*(?:[\"'](?P<quoted>[^\"'\r\n]*)[\"']|(?P<raw>[^\s,;，；}\]）】]+))", re.I)),
     ("SECRET", re.compile(r"\"?(?:secret|client_secret)\"?\s*[:=]\s*(?:[\"'](?P<quoted>[^\"'\r\n]*)[\"']|(?P<raw>[^\s,;，；}\]）】]+))", re.I)),
+    ("ID", re.compile(
+        r'(?<![A-Za-z0-9_])"?(?:[iI][dD]|[A-Za-z][A-Za-z0-9_]*Id|[A-Za-z][A-Za-z0-9_]*_[iI][dD])"?\s*[:=]\s*'
+        r'(?:"(?P<id_quoted>[A-Za-z0-9_-]{3,})"|(?P<id_raw>[A-Za-z0-9_-]{3,}))')),
     ("ID_CARD", re.compile(r"\b\d{17}[\dXx]\b")),
     ("PHONE", re.compile(r"(?<!\d)(?:\+86[- ]?)?1[3-9]\d{9}(?!\d)")),
     ("EMAIL", re.compile(r"\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}\b")),
@@ -65,6 +68,8 @@ def detect(text: str, dictionary: Iterable[tuple] = (), category_defaults: dict[
     for category, pattern in RULES:
         for match in pattern.finditer(text):
             start, end = _value_span(match)
+            if category == "ID" and not any(character.isdigit() for character in text[start:end]):
+                continue
             candidates.append(_finding(category, start, end, text[start:end], "rule", category_defaults))
     for entry in sorted(dictionary, key=lambda item: len(item[0]), reverse=True):
         term, category = entry[:2]
@@ -110,7 +115,7 @@ def _finding(category: str, start: int, end: int, value: str, source: str,
 
 def _value_span(match: re.Match[str]) -> tuple[int, int]:
     """Field rules capture only their secret value; other rules use the full match."""
-    for name in ("bearer", "quoted", "raw"):
+    for name in ("bearer", "quoted", "raw", "id_quoted", "id_raw"):
         if match.groupdict().get(name) is not None:
             return match.span(name)
     return match.span()
