@@ -1,0 +1,34 @@
+{
+  "model_dir": "F:\\code\\SafePrompt\\release\\dist\\SafePrompt\\models\\uie-nano-static",
+  "unavailable": false,
+  "error": null,
+  "network_attempts": [],
+  "dpapi_roundtrip": true,
+  "entities": [
+    {
+      "category": "PERSON",
+      "text": "韩静",
+      "start": 0,
+      "end": 2
+    },
+    {
+      "category": "ORG",
+      "text": "海川大学",
+      "start": 4,
+      "end": 8
+    }
+  ],
+  "safe_text": "<PERSON_1>反馈<ORG_1>的门户无法登录。\n服务器：<IP_1>\n电话：<PHONE_1>\n邮箱：<EMAIL_1>\npassword=<PASSWORD_1>",
+  "safe_text_matches": true,
+  "dictionary_ok": true,
+  "degraded_safe_text": "<IP_1> <CUSTOMER_1>",
+  "recovery": {
+    "text": "建议先联系韩静确认账号状态。\n如仍无法解决，可联系海川大学管理员，\n并确认hanjing@example.com是否有效。",
+    "matches": true,
+    "restored_count": 3,
+    "unknown_count": 0,
+    "expiry_ok": true,
+    "overwrite_ok": true,
+    "clear_ok": true
+  }
+}

@@ -45,6 +45,7 @@ class NerService:
         self._unavailable = False
         self._loading = False
         self._lock = Lock()
+        self._requests: Queue[tuple[str, Queue[tuple[bool, object]]]] = Queue()
 
     @property
     def unavailable(self) -> bool:
@@ -61,17 +62,23 @@ class NerService:
                 return False
             self._loading = True
 
-        def load() -> None:
+        def work() -> None:
             try:
                 recognizer = self.loader()
             except Exception:
                 self._unavailable = True
-            else:
-                self._recognizer = recognizer
-            finally:
                 self._loading = False
+                return
+            self._recognizer = recognizer
+            self._loading = False
+            while not self._unavailable:
+                text, output = self._requests.get()
+                try:
+                    output.put((True, recognizer.recognize(text)))
+                except Exception as error:
+                    output.put((False, error))
 
-        Thread(target=load, daemon=True).start()
+        Thread(target=work, daemon=True).start()
         return True
 
     def recognize(self, text: str) -> list[EntityResult]:
@@ -82,13 +89,7 @@ class NerService:
             return []
         output: Queue[tuple[bool, object]] = Queue(maxsize=1)
 
-        def run() -> None:
-            try:
-                output.put((True, self._recognizer.recognize(text)))
-            except Exception as error:
-                output.put((False, error))
-
-        Thread(target=run, daemon=True).start()
+        self._requests.put((text, output))
         try:
             success, value = output.get(timeout=self.timeout_seconds)
         except Exception:

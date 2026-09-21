@@ -45,8 +45,10 @@ class UieNanoRecognizer:
         if not all(path.is_file() for path in required):
             raise FileNotFoundError(f"incomplete local UIE model: {model_dir}")
         from paddlenlp import Taskflow
+        from paddlenlp.taskflow import utils as taskflow_utils
 
         path = str(model_dir)
+        taskflow_utils.DOWNLOAD_CHECK = True
         with deny_network():
             predictor = Taskflow("information_extraction", schema=["人名", "组织机构"],
                                  model="uie-nano", task_path=path, is_static_model=True, device_id=-1)

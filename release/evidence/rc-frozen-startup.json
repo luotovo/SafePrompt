@@ -1,0 +1,7 @@
+{
+  "executable": "F:\\code\\SafePrompt\\release\\dist\\SafePrompt\\SafePrompt.exe",
+  "cwd": "F:\\code",
+  "pid": 25036,
+  "alive_after_seconds": 10.0,
+  "exit_code_after_probe_stop": 1
+}

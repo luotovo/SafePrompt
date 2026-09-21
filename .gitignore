@@ -11,3 +11,11 @@ benchmarks/results/uie-packaging-spike/attempt*/dist/
 build/
 dist/
 *.spec
+!release/*.spec
+release/evidence/*
+!release/evidence/final-clean-build-thread-affinity.log
+!release/evidence/final-pyinstaller-warnings.txt
+!release/evidence/rc-frozen-startup.json
+!release/evidence/rc-frozen-ui-e2e.json
+!release/evidence/rc-frozen-offline-e2e.json
+!release/evidence/rc-frozen-missing-model.json

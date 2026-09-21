@@ -1,0 +1,21 @@
+{
+  "model_dir": "F:\\code\\SafePrompt\\release\\dist\\SafePrompt\\models\\missing-uie-model",
+  "unavailable": true,
+  "error": "FileNotFoundError: incomplete local UIE model: F:\\code\\SafePrompt\\release\\dist\\SafePrompt\\models\\missing-uie-model",
+  "network_attempts": [],
+  "dpapi_roundtrip": true,
+  "entities": [],
+  "safe_text": "韩静反馈海川大学的门户无法登录。\n服务器：<IP_1>\n电话：<PHONE_1>\n邮箱：<EMAIL_1>\npassword=<PASSWORD_1>",
+  "safe_text_matches": false,
+  "dictionary_ok": true,
+  "degraded_safe_text": "<IP_1> <CUSTOMER_1>",
+  "recovery": {
+    "text": "建议先联系<PERSON_1>确认账号状态。\n如仍无法解决，可联系<ORG_1>管理员，\n并确认hanjing@example.com是否有效。",
+    "matches": false,
+    "restored_count": 1,
+    "unknown_count": 2,
+    "expiry_ok": true,
+    "overwrite_ok": true,
+    "clear_ok": true
+  }
+}

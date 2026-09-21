@@ -1,0 +1,14 @@
+{
+  "model_loaded": true,
+  "tray_visible": true,
+  "process_hotkey_listener_alive": true,
+  "recovery_hotkey_listener_alive": true,
+  "safe_clipboard_ok": true,
+  "preview_called": true,
+  "actual_safe_clipboard": "<PERSON_1>反馈<ORG_1>的门户无法登录。\n服务器：<IP_1>\n电话：<PHONE_1>\n邮箱：<EMAIL_1>\npassword=<PASSWORD_1>",
+  "recovery_session_created": true,
+  "restored_clipboard_ok": true,
+  "recovery_preview_called": true,
+  "actual_restored_clipboard": "建议先联系韩静确认账号状态。\n如仍无法解决，可联系海川大学管理员，\n并确认hanjing@example.com是否有效。",
+  "clipboard_restored_after_probe": true
+}

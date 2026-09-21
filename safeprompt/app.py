@@ -34,6 +34,20 @@ def uie_model_dir() -> Path:
     return application_dir() / "models" / "uie-nano-static"
 
 
+def load_production_uie():
+    """Load and warm the local model on NerService's background loader thread."""
+    recognizer = load_uie_local(uie_model_dir())
+    recognizer.recognize("本地实体识别模型预热。")
+    return recognizer
+
+
+def startup_command() -> str:
+    executable = f'"{Path(sys.executable).resolve()}"'
+    if getattr(sys, "frozen", False):
+        return executable
+    return f'{executable} "{application_dir() / "main.py"}"'
+
+
 class HotkeyBridge(QObject):
     triggered = Signal()
     restore_triggered = Signal()
@@ -259,9 +273,9 @@ class SafePromptApp(QObject):
         super().__init__()
         self.app = app
         self.settings = load_settings()
-        self.ner = NerService(lambda: load_uie_local(uie_model_dir()))
+        self.ner = NerService(load_production_uie)
         self.recovery = ActiveRecoverySession()
-        self.startup_command = f'"{sys.executable}" "{Path(__file__).resolve().parent.parent / "main.py"}"'
+        self.startup_command = startup_command()
         actual_startup = startup_enabled(self.startup_command)
         if self.settings["startup"] != actual_startup:
             self.settings["startup"] = actual_startup
