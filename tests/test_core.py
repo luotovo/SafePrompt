@@ -10,6 +10,43 @@ def test_consistent_masking() -> None:
     assert safe == "<PERSON_1>访问<IP_1>，电话<PHONE_1>；password=<PASSWORD_1>；再访问<IP_1>"
 
 
+def test_mask_skips_placeholders_already_present_in_original_text() -> None:
+    text = "周明说 <PERSON_1> 是业务模板。"
+    safe, findings = mask(text, detect(text, [("周明", "PERSON", True)]))
+    assert safe == "<PERSON_2>说 <PERSON_1> 是业务模板。"
+    recovery = ActiveRecoverySession()
+    recovery.replace(findings)
+    assert recovery.restore(safe).text == text
+
+
+def test_mask_skips_multiple_reserved_placeholders_deterministically() -> None:
+    text = "<PERSON_1> 周明 <PERSON_2> 陈浩 <PERSON_5> 周明"
+    safe, _ = mask(text, detect(text, [("周明", "PERSON", True), ("陈浩", "PERSON", True)]))
+    assert safe == "<PERSON_1> <PERSON_3> <PERSON_2> <PERSON_4> <PERSON_5> <PERSON_3>"
+
+
+def test_reserved_placeholders_are_independent_per_category() -> None:
+    text = "<ID_1> 123456 <EMAIL_1> a@example.com <ORG_1> 星河科技"
+    safe, _ = mask(text, detect(text, [
+        ("123456", "ID", True), ("星河科技", "ORG", True),
+    ]))
+    assert safe == "<ID_1> <ID_2> <EMAIL_1> <EMAIL_2> <ORG_1> <ORG_2>"
+
+
+def test_unknown_original_placeholder_is_never_added_to_recovery_mapping() -> None:
+    text = "周明说 <PERSON_99> 是上游模板。"
+    safe, findings = mask(text, detect(text, [("周明", "PERSON", True)]))
+    recovery = ActiveRecoverySession()
+    recovery.replace(findings)
+    assert safe == "<PERSON_1>说 <PERSON_99> 是上游模板。"
+    assert recovery.restore(safe).text == text
+
+
+def test_only_complete_uppercase_placeholders_are_reserved() -> None:
+    text = "周明 person2 2person <person_3> PERSON_4"
+    assert mask(text, detect(text, [("周明", "PERSON", True)]))[0].startswith("<PERSON_1>")
+
+
 def test_db_credential_overrides_ip() -> None:
     findings = detect("jdbc:mysql://10.21.3.15:3306/test?user=admin&password=123456")
     assert [item.category for item in findings] == ["DB_CREDENTIAL"]
@@ -78,7 +115,10 @@ def test_source_priority_is_explicit_within_same_category_layer() -> None:
     assert detect(text, [(text, "PERSON", True)], extra_candidates=[model])[0].source == "dictionary"
 
 
-@pytest.mark.parametrize("key", ["id", "Id", "ID", "fdId", "fdDocId", "fdModelId", "recordId", "userId", "creatorId", "xxx_id"])
+@pytest.mark.parametrize("key", [
+    "id", "Id", "ID", "fdId", "fdDocId", "fdModelId", "recordId", "userId", "creatorId", "xxx_id",
+    "UserID", "USERID", "User_ID", "USER_ID", "RecordID", "RECORD_ID",
+])
 def test_structured_identifier_keys_mask_only_their_values(key: str) -> None:
     text = f'"{key}": "123456"'
     findings = detect(text)
@@ -91,6 +131,11 @@ def test_structured_identifier_keys_mask_only_their_values(key: str) -> None:
 def test_assignment_identifier_preserves_key_and_leading_zeroes() -> None:
     text = "creatorId=068226 record_id=abc-123"
     assert mask(text, detect(text))[0] == "creatorId=<ID_1> record_id=<ID_2>"
+
+
+@pytest.mark.parametrize("key", ["UserID", "USERID", "User_ID", "USER_ID", "RecordID", "RECORD_ID"])
+def test_case_insensitive_identifier_assignments_preserve_keys(key: str) -> None:
+    assert mask(f"{key}=55667788", detect(f"{key}=55667788"))[0] == f"{key}=<ID_1>"
 
 
 def test_identifier_category_default_can_disable_masking() -> None:

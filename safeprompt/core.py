@@ -18,6 +18,7 @@ PRIORITY = {
     "PERSON": 6, "ORG": 6, "CUSTOMER": 6, "PROJECT": 6, "DEPARTMENT": 6, "SYSTEM": 6, "ID": 6,
 }
 SOURCE_PRIORITY = {"rule": 1, "dictionary": 2, "entity_model": 3}
+RESERVED_PLACEHOLDER = re.compile(r"<[A-Z][A-Z0-9_]*_[0-9]+>")
 DEFAULT_SELECTED = {category: True for category in RISK_LEVEL}
 DEFAULT_SELECTED.update({"DEPARTMENT": False, "SYSTEM": False, "TABLE_NAME": False, "FIELD_NAME": False})
 KNOWN_CATEGORIES = frozenset(DEFAULT_SELECTED)
@@ -50,8 +51,8 @@ RULES: tuple[tuple[str, re.Pattern[str]], ...] = (
     ("PASSWORD", re.compile(r"\"?(?:password|passwd|pwd)\"?\s*[:=]\s*(?:[\"'](?P<quoted>[^\"'\r\n]*)[\"']|(?P<raw>[^\s,;，；}\]）】]+))", re.I)),
     ("SECRET", re.compile(r"\"?(?:secret|client_secret)\"?\s*[:=]\s*(?:[\"'](?P<quoted>[^\"'\r\n]*)[\"']|(?P<raw>[^\s,;，；}\]）】]+))", re.I)),
     ("ID", re.compile(
-        r'(?<![A-Za-z0-9_])"?(?:[iI][dD]|[A-Za-z][A-Za-z0-9_]*Id|[A-Za-z][A-Za-z0-9_]*_[iI][dD])"?\s*[:=]\s*'
-        r'(?:"(?P<id_quoted>[A-Za-z0-9_-]{3,})"|(?P<id_raw>[A-Za-z0-9_-]{3,}))')),
+        r'(?<![A-Za-z0-9_])"?(?P<id_key>[iI][dD]|[A-Za-z][A-Za-z0-9_]*Id|[A-Za-z][A-Za-z0-9_]*_[iI][dD])"?\s*[:=]\s*'
+        r'(?:"(?P<id_quoted>[A-Za-z0-9_-]{3,})"|(?P<id_raw>[A-Za-z0-9_-]{3,}))', re.I)),
     ("ID_CARD", re.compile(r"\b\d{17}[\dXx]\b")),
     ("PHONE", re.compile(r"(?<!\d)(?:\+86[- ]?)?1[3-9]\d{9}(?!\d)")),
     ("EMAIL", re.compile(r"\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}\b")),
@@ -68,7 +69,8 @@ def detect(text: str, dictionary: Iterable[tuple] = (), category_defaults: dict[
     for category, pattern in RULES:
         for match in pattern.finditer(text):
             start, end = _value_span(match)
-            if category == "ID" and not any(character.isdigit() for character in text[start:end]):
+            if category == "ID" and (match.group("id_key").casefold() == "valid"
+                                     or not any(character.isdigit() for character in text[start:end])):
                 continue
             candidates.append(_finding(category, start, end, text[start:end], "rule", category_defaults))
     for entry in sorted(dictionary, key=lambda item: len(item[0]), reverse=True):
@@ -88,12 +90,19 @@ def mask(text: str, findings: Iterable[Finding]) -> tuple[str, list[Finding]]:
     """Apply selected findings, assigning per-category numbers by first occurrence."""
     counters: dict[str, int] = {}
     replacements: dict[tuple[str, str], str] = {}
+    reserved = set(RESERVED_PLACEHOLDER.findall(text))
     resolved: list[Finding] = []
     for item in sorted(findings, key=lambda finding: finding.start):
         key = (item.category, item.original_value.casefold())
         if item.selected and key not in replacements:
-            counters[item.category] = counters.get(item.category, 0) + 1
-            replacements[key] = f"<{item.category}_{counters[item.category]}>"
+            number = counters.get(item.category, 0)
+            while True:
+                number += 1
+                replacement = f"<{item.category}_{number}>"
+                if replacement not in reserved:
+                    break
+            counters[item.category] = number
+            replacements[key] = replacement
         resolved.append(item.with_replacement(replacements.get(key, "")))
     chunks: list[str] = []
     cursor = 0
