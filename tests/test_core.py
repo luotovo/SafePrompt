@@ -1,4 +1,7 @@
+import pytest
+
 from safeprompt.core import Finding, detect, mask
+from safeprompt.recovery import ActiveRecoverySession
 
 
 def test_consistent_masking() -> None:
@@ -14,7 +17,24 @@ def test_db_credential_overrides_ip() -> None:
 
 def test_bearer_token() -> None:
     text = "Authorization: Bearer eyJabc.DEF_123.GHI-456"
-    assert "<TOKEN_1>" in mask(text, detect(text))[0]
+    safe, resolved = mask(text, detect(text))
+    assert safe == "Authorization: Bearer <TOKEN_1>"
+    recovery = ActiveRecoverySession()
+    recovery.replace(resolved)
+    assert recovery.restore(safe).text == text
+
+
+@pytest.mark.parametrize("scheme", ["Bearer", "bearer", "BEARER"])
+def test_bearer_token_preserves_authentication_scheme(scheme: str) -> None:
+    text = f"Authorization: {scheme} abc123.signature"
+    findings = detect(text)
+    assert [(item.category, item.original_value) for item in findings] == [("TOKEN", "abc123.signature")]
+    assert mask(text, findings)[0] == f"Authorization: {scheme} <TOKEN_1>"
+
+
+def test_token_assignment_and_api_key_behavior_remain_supported() -> None:
+    text = "token=abc123.signature apiKey=sk_abcdefghijklmnop"
+    assert mask(text, detect(text))[0] == "token=<TOKEN_1> apiKey=<API_KEY_1>"
 
 
 def test_json_password_and_chinese_punctuation() -> None:

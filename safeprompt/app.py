@@ -8,12 +8,12 @@ from collections.abc import Callable
 from pathlib import Path
 
 from .runtime import HotkeyManager, apply_settings_transaction, startup_enabled
-from PySide6.QtCore import QObject, QTimer, Signal
+from PySide6.QtCore import QObject, QSize, QTimer, Signal
 from PySide6.QtGui import QAction, QIcon
 from PySide6.QtWidgets import (
     QApplication, QCheckBox, QDialog, QHBoxLayout, QLabel, QMenu, QMessageBox,
     QPushButton, QPlainTextEdit, QSystemTrayIcon, QVBoxLayout, QWidget, QLineEdit,
-    QTableWidget, QTableWidgetItem, QComboBox,
+    QTableWidget, QTableWidgetItem, QComboBox, QScrollArea,
 )
 from .core import Finding, KNOWN_CATEGORIES, detect, mask
 from .storage import load_settings, save_settings
@@ -23,6 +23,19 @@ from .recovery import ActiveRecoverySession, RestoreResult
 
 MAX_TEXT_LENGTH = 100_000
 RECOVERY_HOTKEY = "<ctrl>+<shift>+r"
+
+
+def dialog_size_for_screen(available: QSize, preferred: QSize) -> QSize:
+    return QSize(min(preferred.width(), int(available.width() * 0.90)),
+                 min(preferred.height(), int(available.height() * 0.85)))
+
+
+def configure_preview_dialog(dialog: QDialog, preferred: QSize) -> QSize:
+    screen = dialog.screen() or QApplication.primaryScreen()
+    size = dialog_size_for_screen(screen.availableGeometry().size(), preferred)
+    dialog.setMaximumSize(size)
+    dialog.resize(size)
+    return size
 
 
 def application_dir() -> Path:
@@ -89,12 +102,18 @@ class PreviewDialog(QDialog):
         self.high_risk_warning = high_risk_warning
         self.on_copied = on_copied
         self.setWindowTitle("SafePrompt - 脱敏预览")
-        self.resize(760, 560)
+        available_size = configure_preview_dialog(self, QSize(760, 560))
         layout = QVBoxLayout(self)
         counts = Counter(item.category for item in findings)
         layout.addWidget(QLabel(f"发现 {len(findings)} 项敏感信息：" + "、".join(f"{key} {value}" for key, value in counts.items())))
-        self.items = QVBoxLayout()
-        layout.addLayout(self.items)
+        self.findings_widget = QWidget()
+        self.items = QVBoxLayout(self.findings_widget)
+        self.items.setContentsMargins(0, 0, 0, 0)
+        self.findings_scroll = QScrollArea()
+        self.findings_scroll.setWidgetResizable(True)
+        self.findings_scroll.setWidget(self.findings_widget)
+        self.findings_scroll.setMaximumHeight(min(180, int(available_size.height() * 0.30)))
+        layout.addWidget(self.findings_scroll)
         groups: dict[tuple[str, str], list[Finding]] = {}
         for finding in findings:
             groups.setdefault((finding.category, finding.original_value.casefold()), []).append(finding)
@@ -110,8 +129,11 @@ class PreviewDialog(QDialog):
             self.checkboxes[key] = check
         layout.addWidget(QLabel("将复制的文本"))
         self.preview = QPlainTextEdit(readOnly=True)
-        layout.addWidget(self.preview)
-        buttons = QHBoxLayout()
+        self.preview.setLineWrapMode(QPlainTextEdit.LineWrapMode.NoWrap)
+        layout.addWidget(self.preview, 1)
+        self.button_bar = QWidget()
+        buttons = QHBoxLayout(self.button_bar)
+        buttons.setContentsMargins(0, 0, 0, 0)
         high_risk = QPushButton("仅脱敏高风险项")
         high_risk.clicked.connect(self.select_high_risk)
         buttons.addWidget(high_risk)
@@ -122,7 +144,7 @@ class PreviewDialog(QDialog):
         copy.clicked.connect(self.copy_safe)
         buttons.addWidget(cancel)
         buttons.addWidget(copy)
-        layout.addLayout(buttons)
+        layout.addWidget(self.button_bar)
         self.safe_text = ""
         self.refresh()
 
@@ -169,13 +191,16 @@ class RecoveryDialog(QDialog):
         super().__init__(parent)
         self.result = result
         self.setWindowTitle("SafePrompt - 恢复预览")
-        self.resize(760, 460)
+        configure_preview_dialog(self, QSize(760, 460))
         layout = QVBoxLayout(self)
         layout.addWidget(QLabel(f"已恢复 {result.restored_count} 处；未知占位符 {result.unknown_count} 处保持不变。"))
         layout.addWidget(QLabel("恢复后的内容包含原始敏感信息，请仅在可信环境中使用。"))
         self.preview = QPlainTextEdit(result.text, readOnly=True)
-        layout.addWidget(self.preview)
-        buttons = QHBoxLayout()
+        self.preview.setLineWrapMode(QPlainTextEdit.LineWrapMode.NoWrap)
+        layout.addWidget(self.preview, 1)
+        self.button_bar = QWidget()
+        buttons = QHBoxLayout(self.button_bar)
+        buttons.setContentsMargins(0, 0, 0, 0)
         buttons.addStretch()
         cancel = QPushButton("取消")
         cancel.clicked.connect(self.reject)
@@ -183,7 +208,7 @@ class RecoveryDialog(QDialog):
         copy.clicked.connect(self.copy_restored)
         buttons.addWidget(cancel)
         buttons.addWidget(copy)
-        layout.addLayout(buttons)
+        layout.addWidget(self.button_bar)
 
     def copy_restored(self) -> None:
         QApplication.clipboard().setText(self.result.text)

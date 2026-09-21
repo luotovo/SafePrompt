@@ -42,7 +42,10 @@ class Finding:
 
 RULES: tuple[tuple[str, re.Pattern[str]], ...] = (
     ("DB_CREDENTIAL", re.compile(r"\b(?:jdbc:[a-z0-9]+|(?:mysql|postgres(?:ql)?|mssql)://)[^\s'\"<>，。；）】]+", re.I)),
-    ("TOKEN", re.compile(r"\bBearer\s+[A-Za-z0-9._~+/=-]{12,}|\beyJ[A-Za-z0-9_-]+\.[A-Za-z0-9_-]+\.[A-Za-z0-9_-]+", re.I)),
+    ("TOKEN", re.compile(
+        r"\bBearer\s+(?P<bearer>[A-Za-z0-9._~+/=-]+)"
+        r"|\"?(?:access_token|refresh_token|token)\"?\s*[:=]\s*(?:[\"'](?P<quoted>[^\"'\r\n]*)[\"']|(?P<raw>[^\s,;，；}\]）】]+))"
+        r"|\beyJ[A-Za-z0-9_-]+\.[A-Za-z0-9_-]+\.[A-Za-z0-9_-]+", re.I)),
     ("API_KEY", re.compile(r"\b(?:sk|pk|ak|rk)_[A-Za-z0-9_-]{12,}\b", re.I)),
     ("PASSWORD", re.compile(r"\"?(?:password|passwd|pwd)\"?\s*[:=]\s*(?:[\"'](?P<quoted>[^\"'\r\n]*)[\"']|(?P<raw>[^\s,;，；}\]）】]+))", re.I)),
     ("SECRET", re.compile(r"\"?(?:secret|client_secret)\"?\s*[:=]\s*(?:[\"'](?P<quoted>[^\"'\r\n]*)[\"']|(?P<raw>[^\s,;，；}\]）】]+))", re.I)),
@@ -107,7 +110,7 @@ def _finding(category: str, start: int, end: int, value: str, source: str,
 
 def _value_span(match: re.Match[str]) -> tuple[int, int]:
     """Field rules capture only their secret value; other rules use the full match."""
-    for name in ("quoted", "raw"):
+    for name in ("bearer", "quoted", "raw"):
         if match.groupdict().get(name) is not None:
             return match.span(name)
     return match.span()
