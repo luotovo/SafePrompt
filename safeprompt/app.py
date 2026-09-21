@@ -16,9 +16,19 @@ from PySide6.QtWidgets import (
 )
 from .core import Finding, KNOWN_CATEGORIES, detect, mask
 from .storage import load_settings, save_settings
-from .ner import NerService, NullRecognizer, to_findings
+from .adapters.paddle import load_uie_local
+from .ner import NerService, to_findings
 
 MAX_TEXT_LENGTH = 100_000
+
+
+def application_dir() -> Path:
+    return Path(sys.executable).resolve().parent if getattr(sys, "frozen", False) else Path(__file__).resolve().parent.parent
+
+
+def uie_model_dir() -> Path:
+    """The model remains external beside the source tree or frozen executable."""
+    return application_dir() / "models" / "uie-nano-static"
 
 
 class HotkeyBridge(QObject):
@@ -211,7 +221,7 @@ class SafePromptApp(QObject):
         super().__init__()
         self.app = app
         self.settings = load_settings()
-        self.ner = NerService(NullRecognizer)
+        self.ner = NerService(lambda: load_uie_local(uie_model_dir()))
         self.startup_command = f'"{sys.executable}" "{Path(__file__).resolve().parent.parent / "main.py"}"'
         actual_startup = startup_enabled(self.startup_command)
         if self.settings["startup"] != actual_startup:
@@ -275,6 +285,10 @@ class SafePromptApp(QObject):
             return
         dictionary = [(item["term"], item["category"], item["default_selected"])
                       for item in self.settings["dictionary"]]
+        first_load = self.ner.start_loading()
+        if first_load:
+            self.tray.showMessage("SafePrompt", "正在后台初始化本地实体识别模型，本次先使用规则与词库。",
+                                  QSystemTrayIcon.MessageIcon.Information, 3000)
         entities = self.ner.recognize(text)
         entity_findings = to_findings(text, entities, self.settings["category_defaults"])
         findings = detect(text, dictionary, self.settings["category_defaults"], entity_findings)

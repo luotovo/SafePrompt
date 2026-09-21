@@ -43,20 +43,48 @@ class NerService:
         self.timeout_seconds = timeout_seconds
         self._recognizer: EntityRecognizer | None = None
         self._unavailable = False
+        self._loading = False
         self._lock = Lock()
 
     @property
     def unavailable(self) -> bool:
         return self._unavailable
 
+    @property
+    def loading(self) -> bool:
+        return self._loading
+
+    def start_loading(self) -> bool:
+        """Start the one-time model load without blocking the UI thread."""
+        with self._lock:
+            if self._recognizer is not None or self._unavailable or self._loading:
+                return False
+            self._loading = True
+
+        def load() -> None:
+            try:
+                recognizer = self.loader()
+            except Exception:
+                self._unavailable = True
+            else:
+                self._recognizer = recognizer
+            finally:
+                self._loading = False
+
+        Thread(target=load, daemon=True).start()
+        return True
+
     def recognize(self, text: str) -> list[EntityResult]:
         if self._unavailable:
+            return []
+        if self._recognizer is None:
+            self.start_loading()
             return []
         output: Queue[tuple[bool, object]] = Queue(maxsize=1)
 
         def run() -> None:
             try:
-                output.put((True, self._get_recognizer().recognize(text)))
+                output.put((True, self._recognizer.recognize(text)))
             except Exception as error:
                 output.put((False, error))
 
@@ -70,15 +98,6 @@ class NerService:
             self._unavailable = True
             return []
         return value  # type: ignore[return-value]
-
-    def _get_recognizer(self) -> EntityRecognizer:
-        if self._recognizer is not None:
-            return self._recognizer
-        with self._lock:
-            if self._recognizer is None:
-                self._recognizer = self.loader()
-        return self._recognizer
-
 
 def to_findings(source_text: str, results: list[EntityResult],
                 category_defaults: dict[str, bool] | None = None,

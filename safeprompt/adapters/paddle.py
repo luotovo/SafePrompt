@@ -40,9 +40,13 @@ class UieNanoRecognizer:
 
     @classmethod
     def from_local_path(cls, model_path: str | Path) -> "UieNanoRecognizer":
+        model_dir = Path(model_path).resolve()
+        required = (model_dir / "inference.pdmodel", model_dir / "inference.pdiparams")
+        if not all(path.is_file() for path in required):
+            raise FileNotFoundError(f"incomplete local UIE model: {model_dir}")
         from paddlenlp import Taskflow
 
-        path = str(Path(model_path).resolve())
+        path = str(model_dir)
         with deny_network():
             predictor = Taskflow("information_extraction", schema=["人名", "组织机构"],
                                  model="uie-nano", task_path=path, is_static_model=True, device_id=-1)

@@ -28,3 +28,12 @@ def test_local_model_load_guard_blocks_network():
         assert "network access blocked" in str(error)
     else:
         raise AssertionError("network guard allowed a connection")
+
+
+def test_uie_missing_local_model_fails_before_import(tmp_path):
+    try:
+        UieNanoRecognizer.from_local_path(tmp_path)
+    except FileNotFoundError as error:
+        assert "incomplete local UIE model" in str(error)
+    else:
+        raise AssertionError("missing model was accepted")

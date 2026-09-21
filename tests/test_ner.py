@@ -1,5 +1,6 @@
 import time
 import math
+from threading import Event
 
 from safeprompt.core import detect, mask
 from safeprompt.ner import EntityResult, NerService, to_findings
@@ -58,12 +59,22 @@ def test_invalid_entity_results_are_discarded():
 
 def test_load_failure_degrades_without_affecting_rules():
     service = NerService(lambda: (_ for _ in ()).throw(OSError("model missing")))
-    assert service.recognize("10.0.0.1") == [] and service.unavailable
+    assert service.recognize("10.0.0.1") == []
+    for _ in range(100):
+        if service.unavailable:
+            break
+        time.sleep(0.001)
+    assert service.unavailable
     assert detect("10.0.0.1")[0].category == "IP"
 
 
 def test_inference_failure_degrades_without_affecting_dictionary():
     service = NerService(lambda: Recognizer(error=RuntimeError("bad model")))
+    assert service.recognize("客户A") == []
+    for _ in range(100):
+        if not service.loading:
+            break
+        time.sleep(0.001)
     assert service.recognize("客户A") == [] and service.unavailable
     assert detect("客户A", [("客户A", "CUSTOMER", True)])[0].category == "CUSTOMER"
 
@@ -71,6 +82,11 @@ def test_inference_failure_degrades_without_affecting_dictionary():
 def test_timeout_degrades_and_does_not_reload():
     loads = []
     service = NerService(lambda: loads.append(1) or Recognizer(delay=0.05), timeout_seconds=0.001)
+    assert service.recognize("文本") == []
+    for _ in range(100):
+        if not service.loading:
+            break
+        time.sleep(0.001)
     assert service.recognize("文本") == [] and service.unavailable
     assert service.recognize("文本") == [] and loads == [1]
 
@@ -78,5 +94,30 @@ def test_timeout_degrades_and_does_not_reload():
 def test_ner_never_modifies_input_text():
     text = "韩静"
     service = NerService(lambda: Recognizer([entity("PERSON", 0, 2, text)]))
+    assert service.recognize(text) == []
+    for _ in range(100):
+        if not service.loading:
+            break
+        time.sleep(0.001)
     results = service.recognize(text)
     assert text == "韩静" and results[0].text == text
+
+
+def test_first_load_is_non_blocking_and_reused():
+    release = Event()
+    loads = []
+    def load():
+        release.wait()
+        loads.append(1)
+        return Recognizer()
+    service = NerService(load)
+    started = time.perf_counter()
+    assert service.recognize("文本") == []
+    assert time.perf_counter() - started < 0.1 and service.loading
+    assert service.recognize("文本") == [] and loads == []
+    release.set()
+    for _ in range(100):
+        if not service.loading:
+            break
+        time.sleep(0.001)
+    assert service.recognize("文本") == [] and loads == [1]
