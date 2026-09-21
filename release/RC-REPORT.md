@@ -2,7 +2,7 @@
 
 ## Scope and baseline
 
-- Source baseline: `3d419be` (UIE integration) plus `101d151` (recovery window).
+- Final source baseline: `08cb8a2b303a4ba9f64756e5aff96b7bd4670025`.
 - Build host: Windows, Python 3.12.0.
 - Build environment: PyInstaller 6.22.3, PaddlePaddle 2.6.2, PaddleNLP 2.6.1, PySide6 6.11.2, pynput 1.8.2, six 1.17.0.
 - Model policy: UIE Nano static model is external and is not included by the spec or committed.
@@ -15,7 +15,7 @@ From the repository root:
 .benchmark-venvs\uie-nano\Scripts\pyinstaller.exe --clean --noconfirm --distpath release\dist --workpath release\build release\SafePrompt.spec
 ```
 
-The final clean build exited 0 in about 256,597 ms. The executable is
+The final clean build from `08cb8a2` exited 0 in about 254,868 ms. The executable is
 `release\dist\SafePrompt\SafePrompt.exe`. The build automatically includes
 PySide6, the tray UI, pynput's Windows keyboard backend, Paddle, PaddleNLP, and
 `paddle\libs\mklml.dll`; no DLL was copied into the final dist by hand. DPAPI is
@@ -23,10 +23,10 @@ called through the Windows `crypt32` API and was verified in the frozen probe.
 
 Final sizes:
 
-- onedir application without model: 733,555,692 bytes (699.573 MiB)
+- onedir application without model: 733,556,350 bytes (699.574 MiB)
 - external static model: 71,538,217 bytes (8 files)
-- application plus external model: 805,093,909 bytes (767.797 MiB, 3,872 files)
-- `SafePrompt.exe`: 40,949,574 bytes
+- application plus external model: 805,094,567 bytes (767.798 MiB, 3,872 files)
+- `SafePrompt.exe`: 40,950,232 bytes
 - automatically collected `mklml.dll`: 92,649,344 bytes
 
 The copied RC model was byte-for-byte SHA-256 manifest-equivalent to the
@@ -101,7 +101,7 @@ reference release, not a claim of secure memory wiping.
 
 ## Tests and warnings
 
-- `python -m pytest -q`: 63 passed.
+- `python -m pytest -q`: 66 passed.
 - The dedicated packaging venv does not contain pytest, so the same suite was
   not duplicated there.
 - PyInstaller's warning file contains optional/cross-platform imports. No
@@ -123,3 +123,23 @@ reference release, not a claim of secure memory wiping.
 - Final frozen UI E2E: `release/evidence/rc-frozen-ui-e2e.json`
 - Final offline pipeline E2E: `release/evidence/rc-frozen-offline-e2e.json`
 - Final missing-model check: `release/evidence/rc-frozen-missing-model.json`
+
+## Final V1 acceptance (`08cb8a2`)
+
+- Runtime versions: Python 3.12.0, Paddle 2.6.2, PaddleNLP 2.6.1.post,
+  PyInstaller 6.22.3.
+- The final build was generated from empty official `release/build` and
+  `release/dist` paths. No DLL was added, removed, or replaced after build.
+  The external UIE model was copied only after the build for runtime testing.
+- Wrong ambient Poppler ICU DLL count was zero; `mklml.dll` was collected by
+  the committed hook.
+- Fresh frozen startup from `F:\code` stayed alive with no cwd dependency.
+  Tray visibility, both global hotkey listeners, DPAPI, UIE, rule/dictionary,
+  preview/copy, Recovery creation, and Recovery preview/copy all passed.
+- The production adapter in this artifact explicitly uses
+  `position_prob=0.5`; SafePrompt's additional post-filter remains `0.0`.
+- Process-level fail-closed validation completed with `network_attempts=[]`.
+  A nonexistent model path failed locally without creating the path or
+  downloading, while rule and dictionary output remained available.
+- Final local evidence uses the `v1-final-*-08cb8a2` filenames under
+  `release/evidence/`. Clean-machine Windows smoke testing was not available.
