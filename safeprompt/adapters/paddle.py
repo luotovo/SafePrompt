@@ -9,6 +9,7 @@ from ..ner import EntityResult
 
 UIE_SCHEMA_MAP = {"人名": "PERSON", "组织机构": "ORG", "组织": "ORG"}
 TASKFLOW_LABEL_MAP = {"PER": "PERSON", "ORG": "ORG"}
+UIE_POSITION_PROB = 0.5
 
 
 @contextmanager
@@ -51,7 +52,8 @@ class UieNanoRecognizer:
         taskflow_utils.DOWNLOAD_CHECK = True
         with deny_network():
             predictor = Taskflow("information_extraction", schema=["人名", "组织机构"],
-                                 model="uie-nano", task_path=path, is_static_model=True, device_id=-1)
+                                 model="uie-nano", task_path=path, is_static_model=True, device_id=-1,
+                                 position_prob=UIE_POSITION_PROB)
         return cls(predictor)
 
     def recognize(self, text: str) -> list[EntityResult]:

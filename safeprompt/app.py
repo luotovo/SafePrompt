@@ -8,7 +8,7 @@ from collections.abc import Callable
 from pathlib import Path
 
 from .runtime import HotkeyManager, apply_settings_transaction, startup_enabled
-from PySide6.QtCore import QObject, Signal
+from PySide6.QtCore import QObject, QTimer, Signal
 from PySide6.QtGui import QAction, QIcon
 from PySide6.QtWidgets import (
     QApplication, QCheckBox, QDialog, QHBoxLayout, QLabel, QMenu, QMessageBox,
@@ -274,7 +274,8 @@ class SafePromptApp(QObject):
         self.app = app
         self.settings = load_settings()
         self.ner = NerService(load_production_uie)
-        self.recovery = ActiveRecoverySession()
+        self.recovery: ActiveRecoverySession | None = None
+        self.recovery_generation = 0
         self.startup_command = startup_command()
         actual_startup = startup_enabled(self.startup_command)
         if self.settings["startup"] != actual_startup:
@@ -320,14 +321,36 @@ class SafePromptApp(QObject):
     def stop_listener(self) -> None:
         self.hotkeys.stop()
         self.recovery_hotkey.stop()
-        self.recovery.clear()
+        self._drop_recovery()
+
+    def create_recovery(self, findings: list[Finding]) -> None:
+        self._drop_recovery()
+        session = ActiveRecoverySession()
+        session.replace(findings)
+        if not session.active:
+            return
+        self.recovery = session
+        self.recovery_generation += 1
+        generation = self.recovery_generation
+        QTimer.singleShot(int(session.ttl_seconds * 1000), lambda: self._expire_recovery(generation))
+
+    def _expire_recovery(self, generation: int) -> None:
+        if generation == self.recovery_generation:
+            self._drop_recovery()
+
+    def _drop_recovery(self) -> None:
+        if self.recovery is not None:
+            self.recovery.clear()
+            self.recovery = None
+        self.recovery_generation += 1
 
     def clear_recovery(self) -> None:
-        self.recovery.clear()
+        self._drop_recovery()
         self.tray.showMessage("SafePrompt", "恢复映射已清除。", QSystemTrayIcon.MessageIcon.Information, 2500)
 
     def restore_clipboard(self) -> None:
-        if not self.recovery.active:
+        if self.recovery is None or not self.recovery.active:
+            self._drop_recovery()
             self.tray.showMessage("SafePrompt", "没有可用的恢复映射，或映射已过期。",
                                   QSystemTrayIcon.MessageIcon.Information, 3000)
             return
@@ -372,7 +395,7 @@ class SafePromptApp(QObject):
         if not findings:
             self.tray.showMessage("SafePrompt", "未发现已支持的敏感信息。", QSystemTrayIcon.MessageIcon.Information, 2500)
             return
-        PreviewDialog(text, findings, self.settings["high_risk_warning"], self.recovery.replace).exec()
+        PreviewDialog(text, findings, self.settings["high_risk_warning"], self.create_recovery).exec()
 
 
 def run() -> int:

@@ -1,4 +1,8 @@
-from safeprompt.adapters.paddle import TaskflowNerRecognizer, UieNanoRecognizer, deny_network
+import sys
+from types import ModuleType
+
+from safeprompt.adapters.paddle import (UIE_POSITION_PROB, TaskflowNerRecognizer,
+                                        UieNanoRecognizer, deny_network)
 from safeprompt.ner import to_findings
 
 
@@ -37,3 +41,19 @@ def test_uie_missing_local_model_fails_before_import(tmp_path):
         assert "incomplete local UIE model" in str(error)
     else:
         raise AssertionError("missing model was accepted")
+
+
+def test_uie_explicitly_pins_validated_position_probability(tmp_path, monkeypatch):
+    (tmp_path / "inference.pdmodel").write_bytes(b"model")
+    (tmp_path / "inference.pdiparams").write_bytes(b"params")
+    captured = {}
+    paddlenlp = ModuleType("paddlenlp")
+    taskflow = ModuleType("paddlenlp.taskflow")
+    utils = ModuleType("paddlenlp.taskflow.utils")
+    paddlenlp.Taskflow = lambda task, **kwargs: captured.update(task=task, **kwargs) or object()
+    taskflow.utils = utils
+    monkeypatch.setitem(sys.modules, "paddlenlp", paddlenlp)
+    monkeypatch.setitem(sys.modules, "paddlenlp.taskflow", taskflow)
+    monkeypatch.setitem(sys.modules, "paddlenlp.taskflow.utils", utils)
+    UieNanoRecognizer.from_local_path(tmp_path)
+    assert captured["position_prob"] == UIE_POSITION_PROB == 0.5

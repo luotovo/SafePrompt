@@ -56,8 +56,10 @@ def test_new_mapping_overwrites_old_mapping():
 
 def test_expiry_releases_mapping():
     session, clock, _ = session_for(ttl=10)
+    previous_mapping = session._mapping
     clock.now = 10
     assert not session.active
+    assert session._mapping == {} and previous_mapping == {}
     assert session.restore("<PERSON_1>").unknown_count == 1
 
 

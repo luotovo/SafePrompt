@@ -71,3 +71,36 @@ def test_recovery_preview_copies_only_after_user_action():
     assert app.clipboard().text() == "before"
     dialog.copy_restored()
     assert app.clipboard().text() == "after"
+
+
+def test_drop_recovery_clears_mapping_and_releases_app_reference():
+    class RecoveryOwner:
+        _drop_recovery = app_module.SafePromptApp._drop_recovery
+
+    owner = RecoveryOwner()
+    owner.recovery_generation = 1
+    owner.recovery = app_module.ActiveRecoverySession()
+    owner.recovery.replace([Finding("PERSON", 0, 2, "韩静", "dictionary", "medium",
+                                            replacement="<PERSON_1>")])
+    session = owner.recovery
+    owner._drop_recovery()
+    assert owner.recovery is None and not session.active
+
+
+def test_recovery_timer_releases_session_without_user_action(monkeypatch):
+    class RecoveryOwner:
+        _drop_recovery = app_module.SafePromptApp._drop_recovery
+        _expire_recovery = app_module.SafePromptApp._expire_recovery
+        create_recovery = app_module.SafePromptApp.create_recovery
+
+    scheduled = []
+    monkeypatch.setattr(app_module.QTimer, "singleShot", lambda milliseconds, callback:
+                        scheduled.append((milliseconds, callback)))
+    owner = RecoveryOwner()
+    owner.recovery = None
+    owner.recovery_generation = 0
+    owner.create_recovery([Finding("PERSON", 0, 2, "韩静", "dictionary", "medium",
+                                   replacement="<PERSON_1>")])
+    assert scheduled[0][0] == 900_000 and owner.recovery is not None
+    scheduled[0][1]()
+    assert owner.recovery is None

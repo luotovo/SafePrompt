@@ -83,11 +83,21 @@ prepared local snapshot. It remains ignored under
 ## Threshold facts
 
 - SafePrompt's `MODEL_THRESHOLDS` currently has no non-zero UIE override, so
-  validated adapter results pass the SafePrompt layer at threshold `0.0`.
-- PaddleNLP Taskflow UIE applies its own default `position_prob=0.5` when it
-  converts start/end token probabilities into spans.
+  validated adapter results pass the SafePrompt post-filter at threshold `0.0`.
+- The production adapter explicitly passes the already validated
+  `position_prob=0.5` to PaddleNLP Taskflow UIE. This is the effective extraction
+  threshold and no longer depends on PaddleNLP's future default value.
 - The 56-sample selection benchmark scored the adapter's returned spans without
   an additional SafePrompt threshold. No threshold was tuned for this RC.
+
+## Recovery privacy semantics
+
+The active recovery mapping exists only in current-process memory. A Qt
+single-shot timer expires it after 15 minutes, clears the mapping, and releases
+the application's session reference. A new successful safe copy clears and
+replaces the prior session; manual clear and application exit do the same. The
+mapping is never written to settings, logs, statistics, or disk. This is
+reference release, not a claim of secure memory wiping.
 
 ## Tests and warnings
 
