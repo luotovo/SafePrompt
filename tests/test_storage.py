@@ -52,3 +52,8 @@ def test_nested_schema_filters_invalid_entries(tmp_path, monkeypatch):
     assert loaded["dictionary"] == [{"term": "客户A", "category": "CUSTOMER", "default_selected": False}]
     assert loaded["category_defaults"]["IP"] is False
     assert "UNKNOWN" not in loaded["category_defaults"]
+
+
+def test_recovery_mapping_is_not_part_of_persistent_settings():
+    settings = storage.default_settings()
+    assert "recovery" not in settings and "mapping" not in settings

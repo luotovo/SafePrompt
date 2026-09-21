@@ -4,6 +4,7 @@ import socket
 import sys
 import threading
 from collections import Counter
+from collections.abc import Callable
 from pathlib import Path
 
 from .runtime import HotkeyManager, apply_settings_transaction, startup_enabled
@@ -18,8 +19,10 @@ from .core import Finding, KNOWN_CATEGORIES, detect, mask
 from .storage import load_settings, save_settings
 from .adapters.paddle import load_uie_local
 from .ner import NerService, to_findings
+from .recovery import ActiveRecoverySession, RestoreResult
 
 MAX_TEXT_LENGTH = 100_000
+RECOVERY_HOTKEY = "<ctrl>+<shift>+r"
 
 
 def application_dir() -> Path:
@@ -33,6 +36,7 @@ def uie_model_dir() -> Path:
 
 class HotkeyBridge(QObject):
     triggered = Signal()
+    restore_triggered = Signal()
 
 
 class SingleInstance(QObject):
@@ -64,10 +68,12 @@ class SingleInstance(QObject):
 
 
 class PreviewDialog(QDialog):
-    def __init__(self, text: str, findings: list[Finding], high_risk_warning: bool, parent: QWidget | None = None):
+    def __init__(self, text: str, findings: list[Finding], high_risk_warning: bool,
+                 on_copied: Callable[[list[Finding]], None] | None = None, parent: QWidget | None = None):
         super().__init__(parent)
         self.text, self.findings = text, findings
         self.high_risk_warning = high_risk_warning
+        self.on_copied = on_copied
         self.setWindowTitle("SafePrompt - 脱敏预览")
         self.resize(760, 560)
         layout = QVBoxLayout(self)
@@ -114,7 +120,7 @@ class PreviewDialog(QDialog):
                 for item in self.findings]
 
     def refresh(self) -> None:
-        self.safe_text, _ = mask(self.text, self.selected_findings())
+        self.safe_text, self.resolved_findings = mask(self.text, self.selected_findings())
         self.preview.setPlainText(self.safe_text)
 
     def select_high_risk(self) -> None:
@@ -134,7 +140,39 @@ class PreviewDialog(QDialog):
                                          QMessageBox.StandardButton.No)
             if answer != QMessageBox.StandardButton.Yes:
                 return
-        QApplication.clipboard().setText(self.safe_text)
+        clipboard = QApplication.clipboard()
+        clipboard.setText(self.safe_text)
+        if clipboard.text() != self.safe_text:
+            QMessageBox.warning(self, "SafePrompt", "写入剪贴板失败，未创建恢复映射。")
+            return
+        if self.on_copied:
+            self.on_copied(self.resolved_findings)
+        self.accept()
+
+
+class RecoveryDialog(QDialog):
+    def __init__(self, result: RestoreResult, parent: QWidget | None = None):
+        super().__init__(parent)
+        self.result = result
+        self.setWindowTitle("SafePrompt - 恢复预览")
+        self.resize(760, 460)
+        layout = QVBoxLayout(self)
+        layout.addWidget(QLabel(f"已恢复 {result.restored_count} 处；未知占位符 {result.unknown_count} 处保持不变。"))
+        layout.addWidget(QLabel("恢复后的内容包含原始敏感信息，请仅在可信环境中使用。"))
+        self.preview = QPlainTextEdit(result.text, readOnly=True)
+        layout.addWidget(self.preview)
+        buttons = QHBoxLayout()
+        buttons.addStretch()
+        cancel = QPushButton("取消")
+        cancel.clicked.connect(self.reject)
+        copy = QPushButton("复制恢复文本")
+        copy.clicked.connect(self.copy_restored)
+        buttons.addWidget(cancel)
+        buttons.addWidget(copy)
+        layout.addLayout(buttons)
+
+    def copy_restored(self) -> None:
+        QApplication.clipboard().setText(self.result.text)
         self.accept()
 
 
@@ -222,6 +260,7 @@ class SafePromptApp(QObject):
         self.app = app
         self.settings = load_settings()
         self.ner = NerService(lambda: load_uie_local(uie_model_dir()))
+        self.recovery = ActiveRecoverySession()
         self.startup_command = f'"{sys.executable}" "{Path(__file__).resolve().parent.parent / "main.py"}"'
         actual_startup = startup_enabled(self.startup_command)
         if self.settings["startup"] != actual_startup:
@@ -229,11 +268,18 @@ class SafePromptApp(QObject):
             save_settings(self.settings)
         self.bridge = HotkeyBridge()
         self.bridge.triggered.connect(self.process_clipboard)
+        self.bridge.restore_triggered.connect(self.restore_clipboard)
         self.tray = QSystemTrayIcon(QIcon(), self)
         menu = QMenu()
         process = QAction("处理剪贴板", self)
         process.triggered.connect(self.process_clipboard)
         menu.addAction(process)
+        restore = QAction("恢复 AI 回复", self)
+        restore.triggered.connect(self.restore_clipboard)
+        menu.addAction(restore)
+        clear_recovery = QAction("清除恢复映射", self)
+        clear_recovery.triggered.connect(self.clear_recovery)
+        menu.addAction(clear_recovery)
         settings = QAction("设置", self)
         settings.triggered.connect(self.open_settings)
         menu.addAction(settings)
@@ -242,9 +288,10 @@ class SafePromptApp(QObject):
         quit_action.triggered.connect(app.quit)
         menu.addAction(quit_action)
         self.tray.setContextMenu(menu)
-        self.tray.setToolTip("SafePrompt：Ctrl+Shift+S 处理剪贴板")
+        self.tray.setToolTip("SafePrompt：Ctrl+Shift+S 脱敏；Ctrl+Shift+R 恢复")
         self.tray.show()
         self.hotkeys = HotkeyManager(self.bridge.triggered.emit)
+        self.recovery_hotkey = HotkeyManager(self.bridge.restore_triggered.emit)
         self.start_listener()
         app.aboutToQuit.connect(self.stop_listener)
 
@@ -252,9 +299,25 @@ class SafePromptApp(QObject):
         success, error = self.hotkeys.switch(self.settings["hotkey"])
         if not success:
             QMessageBox.warning(None, "SafePrompt", f"快捷键无效或不可用：{error}")
+        success, error = self.recovery_hotkey.switch(RECOVERY_HOTKEY)
+        if not success:
+            QMessageBox.warning(None, "SafePrompt", f"恢复快捷键无效或不可用：{error}")
 
     def stop_listener(self) -> None:
         self.hotkeys.stop()
+        self.recovery_hotkey.stop()
+        self.recovery.clear()
+
+    def clear_recovery(self) -> None:
+        self.recovery.clear()
+        self.tray.showMessage("SafePrompt", "恢复映射已清除。", QSystemTrayIcon.MessageIcon.Information, 2500)
+
+    def restore_clipboard(self) -> None:
+        if not self.recovery.active:
+            self.tray.showMessage("SafePrompt", "没有可用的恢复映射，或映射已过期。",
+                                  QSystemTrayIcon.MessageIcon.Information, 3000)
+            return
+        RecoveryDialog(self.recovery.restore(self.app.clipboard().text())).exec()
 
     def open_settings(self) -> None:
         self.settings["startup"] = startup_enabled(self.startup_command)
@@ -295,7 +358,7 @@ class SafePromptApp(QObject):
         if not findings:
             self.tray.showMessage("SafePrompt", "未发现已支持的敏感信息。", QSystemTrayIcon.MessageIcon.Information, 2500)
             return
-        PreviewDialog(text, findings, self.settings["high_risk_warning"]).exec()
+        PreviewDialog(text, findings, self.settings["high_risk_warning"], self.recovery.replace).exec()
 
 
 def run() -> int:
