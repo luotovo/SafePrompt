@@ -13,7 +13,7 @@ from PySide6.QtGui import QAction, QIcon
 from PySide6.QtWidgets import (
     QApplication, QCheckBox, QDialog, QHBoxLayout, QLabel, QMenu, QMessageBox,
     QPushButton, QPlainTextEdit, QSystemTrayIcon, QVBoxLayout, QWidget, QLineEdit,
-    QTableWidget, QTableWidgetItem, QComboBox, QScrollArea,
+    QTableWidget, QTableWidgetItem, QComboBox, QScrollArea, QStyle,
 )
 from .core import Finding, KNOWN_CATEGORIES, detect, mask
 from .storage import load_settings, save_settings
@@ -23,6 +23,10 @@ from .recovery import ActiveRecoverySession, RestoreResult
 
 MAX_TEXT_LENGTH = 100_000
 RECOVERY_HOTKEY = "<ctrl>+<shift>+r"
+
+
+def tray_icon() -> QIcon:
+    return QApplication.style().standardIcon(QStyle.StandardPixmap.SP_ComputerIcon)
 
 
 def dialog_size_for_screen(available: QSize, preferred: QSize) -> QSize:
@@ -309,7 +313,7 @@ class SafePromptApp(QObject):
         self.bridge = HotkeyBridge()
         self.bridge.triggered.connect(self.process_clipboard)
         self.bridge.restore_triggered.connect(self.restore_clipboard)
-        self.tray = QSystemTrayIcon(QIcon(), self)
+        self.tray = QSystemTrayIcon(tray_icon(), self)
         menu = QMenu()
         process = QAction("处理剪贴板", self)
         process.triggered.connect(self.process_clipboard)

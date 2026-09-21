@@ -4,7 +4,7 @@ import pytest
 import safeprompt.app as app_module
 from safeprompt.app import (RECOVERY_HOTKEY, PreviewDialog, RecoveryDialog, SettingsDialog,
                             application_dir, dialog_size_for_screen, load_production_uie,
-                            startup_command, uie_model_dir)
+                            startup_command, tray_icon, uie_model_dir)
 from safeprompt.core import Finding, detect, mask
 from safeprompt.recovery import RestoreResult
 from safeprompt.storage import default_settings
@@ -18,6 +18,11 @@ def test_settings_dialog_preserves_complete_schema():
     dialog = SettingsDialog(settings)
     value = dialog.value()
     assert set(value) == {"dictionary", "hotkey", "high_risk_warning", "category_defaults", "startup"}
+
+
+def test_tray_icon_is_not_empty():
+    QApplication.instance() or QApplication([])
+    assert not tray_icon().isNull()
 
 
 def test_uie_model_path_does_not_depend_on_cwd(monkeypatch, tmp_path):
