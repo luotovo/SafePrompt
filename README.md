@@ -176,22 +176,38 @@ Authorization: Bearer <TOKEN_1>
 
 普通数量、状态码、页码和时间戳不会仅因数字形态自动被识别为 ID。
 
-## 比赛包快速使用
+## 已构建便携包的使用方式
 
-1. 解压 `SafePrompt-Competition-Windows-x64.zip`，双击 `SafePrompt.exe`；应用启动后常驻 Windows 托盘，无需安装或联网。
+> 本仓库只发布源码，不包含比赛 ZIP、EXE 或 UIE 模型资产。以下步骤仅适用于已合法获得便携包的用户。
+
+1. 解压 SafePrompt Windows 便携包，双击 `SafePrompt.exe`；应用启动后常驻 Windows 托盘，无需安装或联网。
 2. 复制需要处理的文本，按 `Ctrl + Shift + S`，确认人名、机构、手机、邮箱、身份证、银行卡、IP、Password、Token、API Key 等敏感信息后复制脱敏文本。
 3. 将脱敏文本发送给 AI；收到回复后复制回复并按 `Ctrl + Shift + R`，在本地恢复原始信息。
 
-## 本地运行
+## 从源码运行
 
-环境：Windows、Python 3.12。
+环境：Windows、Python 3.12。Core 版本不需要修改源码，也不需要下载模型。
 
 ```powershell
+git clone https://github.com/luotovo/SafePrompt.git
+cd SafePrompt
+
+py -3.12 -m venv .venv
+.\.venv\Scripts\Activate.ps1
+
+python -m pip install --upgrade pip
 python -m pip install -r requirements-core.txt
 python main.py
 ```
 
 首次启动后请检查 Windows 托盘区域。若托盘图标被系统折叠，可在 Windows 的任务栏设置中显示它。
+
+如果 PowerShell 禁止当前会话激活虚拟环境，可直接使用：
+
+```powershell
+.\.venv\Scripts\python.exe -m pip install -r requirements-core.txt
+.\.venv\Scripts\python.exe main.py
+```
 
 ## 本地 UIE 模型（可选）
 
@@ -226,6 +242,7 @@ config.json
 
 ```powershell
 $env:SAFEPROMPT_UIE_ONNX_DIR = "F:\path\to\uie-nano-onnx"
+python main.py
 ```
 
 该路径只读取本地文件；运行时不会下载模型。`requirements-ai.txt` 与 Paddle 静态模型入口暂时保留，仅用于 Full 对照验证。
@@ -242,9 +259,20 @@ NumPy         2.5.3
 
 运行时会拒绝模型组件联网下载资源；本地模型缺失或加载失败时会明确降级，不阻断规则和词库处理。
 
+## 运行测试
+
+测试工具不属于产品运行依赖，需要单独安装：
+
+```powershell
+python -m pip install pytest
+python -m pytest -q
+```
+
+未配置 UIE 模型时，需要真实模型的测试会跳过。
+
 ## 当前状态
 
-当前稳定版本：`v1.0.3`。当前发布候选：`v1.1.0-rc1`（Windows Core）。
+当前公开仓库为 SafePrompt V1.1 Hybrid 的源码快照。仓库不分发 UIE Nano 模型或构建后的 Windows artifact。
 
 已验证：
 
@@ -256,7 +284,7 @@ NumPy         2.5.3
 - Placeholder collision protection
 - Offline fail-closed 与 missing-model fallback
 
-自动化测试：`146 passed`
+当前公开源码测试：`226 passed, 1 skipped`
 
 ## 已知限制
 
