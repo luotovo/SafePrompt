@@ -6,6 +6,19 @@ SafePrompt 是一个面向 Windows 的本地 AI 安全剪贴板工具。
 
 它不接管浏览器，也不会自动向 AI 发送数据。
 
+## Windows 下载
+
+无需配置 Python 环境的用户，可以直接从
+[GitHub Releases](https://github.com/luotovo/SafePrompt/releases/tag/windows-builds-2026-10)
+下载 Windows x64 便携版。解压后双击 `SafePrompt.exe` 即可运行，无需安装。
+
+| 版本 | 适合场景 | ZIP 大小 | 解压后大小 |
+| --- | --- | ---: | ---: |
+| [Full Enhanced](https://github.com/luotovo/SafePrompt/releases/download/windows-builds-2026-10/SafePrompt-Full-Enhanced-Windows-x64.zip) | 完整 UIE 增强能力，优先考虑完整运行环境 | 337.706 MiB | 767.801 MiB |
+| [Hybrid](https://github.com/luotovo/SafePrompt/releases/download/windows-builds-2026-10/SafePrompt-Hybrid-Windows-x64.zip) | ONNX Runtime 本地增强，体积更小，推荐普通用户使用 | 132.361 MiB | 288.638 MiB |
+
+两个版本均在本地完成敏感信息检测、脱敏与恢复。
+
 ## 工作流程
 
 ```text
@@ -176,11 +189,9 @@ Authorization: Bearer <TOKEN_1>
 
 普通数量、状态码、页码和时间戳不会仅因数字形态自动被识别为 ID。
 
-## 已构建便携包的使用方式
+## Windows 便携包的使用方式
 
-> 本仓库只发布源码，不包含比赛 ZIP、EXE 或 UIE 模型资产。以下步骤仅适用于已合法获得便携包的用户。
-
-1. 解压 SafePrompt Windows 便携包，双击 `SafePrompt.exe`；应用启动后常驻 Windows 托盘，无需安装或联网。
+1. 从上方 Releases 下载所需版本并解压，双击 `SafePrompt.exe`；应用启动后常驻 Windows 托盘，无需安装或联网。
 2. 复制需要处理的文本，按 `Ctrl + Shift + S`，确认人名、机构、手机、邮箱、身份证、银行卡、IP、Password、Token、API Key 等敏感信息后复制脱敏文本。
 3. 将脱敏文本发送给 AI；收到回复后复制回复并按 `Ctrl + Shift + R`，在本地恢复原始信息。
 
@@ -211,7 +222,9 @@ python main.py
 
 ## 本地 UIE 模型（可选）
 
-仓库不包含 UIE 模型文件，也不包含构建后的 Windows release artifact。
+源码仓库不直接包含 UIE 模型文件。已经构建好的 Windows 便携版请从
+[GitHub Releases](https://github.com/luotovo/SafePrompt/releases/tag/windows-builds-2026-10)
+下载。
 
 SafePrompt V1.1 Core 不依赖 AI 模型。没有 UIE 时，仍可使用规则、Structured ID、本地词库、中文 PERSON-lite、脱敏和 Recovery；Core 不提供通用自动 ORG NER。
 
@@ -272,7 +285,9 @@ python -m pytest -q
 
 ## 当前状态
 
-当前公开仓库为 SafePrompt V1.1 Hybrid 的源码快照。仓库不分发 UIE Nano 模型或构建后的 Windows artifact。
+当前公开仓库为 SafePrompt V1.1 Hybrid 的源码快照。可直接运行的 Windows x64
+Full Enhanced 与 Hybrid 版本已经发布至
+[`windows-builds-2026-10`](https://github.com/luotovo/SafePrompt/releases/tag/windows-builds-2026-10)。
 
 已验证：
 
@@ -285,6 +300,14 @@ python -m pytest -q
 - Offline fail-closed 与 missing-model fallback
 
 当前公开源码测试：`226 passed, 1 skipped`
+
+## 许可证
+
+SafePrompt 项目自有源代码采用根目录 [MIT License](LICENSE)。发行包内的第三方软件、
+运行时和模型资产继续适用各自的许可证与分发条件，不属于 SafePrompt MIT License 的
+授权范围。相关清单与现有证据见
+[`release/THIRD-PARTY-ASSETS.md`](release/THIRD-PARTY-ASSETS.md) 和
+[`release/THIRD-PARTY-NOTICES.md`](release/THIRD-PARTY-NOTICES.md)。
 
 ## 已知限制
 
